@@ -1,0 +1,16 @@
+{
+  "name": "mho/php-blog-oop",
+  "authors": [
+    {
+      "name": "t-ho",
+      "email": "t.ho@tdev.app"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Core\\": "core/"
+    }
+  },
+  "require": {}
+}
