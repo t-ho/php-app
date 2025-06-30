@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Core;
 
+use Exception;
+use PDO;
+use PDOException;
+use PDOStatement;
+use RuntimeException;
+
 class Database
 {
-    protected \PDO $pdo;
+    protected PDO $pdo;
 
     public function __construct(array $config)
     {
@@ -21,16 +27,16 @@ class Database
             $password = $config['password'] ?? null;
             $options = $config['options'] ?? null;
 
-            $this->pdo = new \PDO(
+            $this->pdo = new PDO(
                 dsn: $dsn,
                 username: $username,
                 password: $password,
                 options: $options
             );
 
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
-            throw new \RuntimeException("Database connection error: " . $e->getMessage());
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            throw new RuntimeException("Database connection error: " . $e->getMessage());
         }
     }
 
@@ -41,19 +47,19 @@ class Database
 
         return match ($driver) {
             'sqlite' => "sqlite:{$dbname}",
-            default => throw new \Exception("Unsupported database driver: {$driver}"),
+            default => throw new Exception("Unsupported database driver: {$driver}"),
         };
     }
 
-    public function query(string $sql, array $params = []): \PDOStatement
+    public function query(string $sql, array $params = []): PDOStatement
     {
         $stmt = $this->pdo->prepare($sql);
         if (!$stmt) {
-            throw new \RuntimeException("Failed to prepare SQL statement: {$sql}");
+            throw new RuntimeException("Failed to prepare SQL statement: {$sql}");
         }
 
         if (!$stmt->execute($params)) {
-            throw new \RuntimeException("Failed to execute SQL statement: {$sql}");
+            throw new RuntimeException("Failed to execute SQL statement: {$sql}");
         }
 
         return $stmt;
@@ -62,13 +68,13 @@ class Database
     public function fetchAll(string $sql, array $params = []): array
     {
         $stmt = $this->query($sql, $params);
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function fetch(string $sql, array $params = []): object|false
     {
         $stmt = $this->query($sql, $params);
-        return $stmt->fetch(\PDO::FETCH_OBJ) ?: null;
+        return $stmt->fetch(PDO::FETCH_OBJ) ?: null;
     }
 
     public function lastInsertId(): string|false
