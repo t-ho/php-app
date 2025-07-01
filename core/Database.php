@@ -51,32 +51,32 @@ class Database
         };
     }
 
-    public function query(string $sql, array $params = []): PDOStatement
+    public function query(string $query, array $params = []): PDOStatement
     {
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($query);
         if (!$stmt) {
-            throw new RuntimeException("Failed to prepare SQL statement: {$sql}");
+            throw new RuntimeException("Failed to prepare SQL statement: {$query}");
         }
 
         if (!$stmt->execute($params)) {
-            throw new RuntimeException("Failed to execute SQL statement: {$sql}");
+            throw new RuntimeException("Failed to execute SQL statement: {$query}");
         }
 
         return $stmt;
     }
 
-    public function fetchAll(string $sql, array $params = [], ?string $className = null): array
+    public function fetchAll(string $query, array $params = [], ?string $className = null): array
     {
-        $stmt = $this->query($sql, $params);
+        $stmt = $this->query($query, $params);
 
         return $className
           ? $stmt->fetchAll(PDO::FETCH_CLASS, $className)
           : $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function fetch(string $sql, array $params = [], ?string $className = null): mixed
+    public function fetch(string $query, array $params = [], ?string $className = null): mixed
     {
-        $stmt = $this->query($sql, $params);
+        $stmt = $this->query($query, $params);
         $stmt->setFetchMode($className ? PDO::FETCH_CLASS : PDO::FETCH_ASSOC, $className);
 
         return $stmt->fetch();

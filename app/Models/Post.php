@@ -37,7 +37,7 @@ class Post extends Model
         }
 
         return $db->fetchAll(
-            sql: $query,
+            query: $query,
             params: $params,
             className: static::class
         );
@@ -49,7 +49,7 @@ class Post extends Model
         $db = App::get('database');
 
         $db->query(
-            sql: "UPDATE " . static::$table . " SET views = views + 1 WHERE id = ?",
+            query: "UPDATE " . static::$table . " SET views = views + 1 WHERE id = ?",
             params: [$id]
         );
     }

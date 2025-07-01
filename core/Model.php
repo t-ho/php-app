@@ -14,7 +14,7 @@ abstract class Model
         $db = App::get('database');
 
         return $db->fetchAll(
-            sql: "SELECT * FROM " . static::$table,
+            query: "SELECT * FROM " . static::$table,
             className: static::class
         );
     }
@@ -24,7 +24,7 @@ abstract class Model
         /** @var Database $db */
         $db = App::get('database');
         return $db->fetch(
-            sql: "SELECT * FROM " . static::$table . " WHERE id = ?",
+            query: "SELECT * FROM " . static::$table . " WHERE id = ?",
             params: [$id],
             className: static::class
         );
