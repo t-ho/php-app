@@ -8,6 +8,8 @@ abstract class Model
 {
     protected static string $table;
 
+    public $id;
+
     public static function all(): array
     {
         /** @var Database $db */
@@ -36,10 +38,47 @@ abstract class Model
         $db = App::get('database');
         $columns = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_fill(0, count($data), '?'));
-        $sql = "INSERT INTO " . static::$table . " ({$columns}) VALUES ({$placeholders})";
+        $query = "INSERT INTO " . static::$table . " ({$columns}) VALUES ({$placeholders})";
 
-        $db->query($sql, array_values($data));
+        $db->query($query, array_values($data));
 
         return static::find($db->lastInsertId());
+    }
+
+    public function save(): static
+    {
+        /** @var Database $db */
+        $db = App::get('database');
+        $data = get_object_vars($this);
+
+        if (!isset($this->id)) {
+            unset($data['id']); // Remove id if it exists, as it will be auto-generated
+            return static::create($data);
+        }
+
+        unset($data['id']); // Remove id for update
+        $columns = array_map(fn ($column) => "{$column} = ?", array_keys($data));
+        $query = "UPDATE " . static::$table . " SET " . implode(', ', $columns) . " WHERE id = ?";
+        $params = array_values($data);
+        $params[] = $this->id;
+
+        $db->query($query, $params);
+
+        return $this;
+    }
+
+    public function delete(): bool
+    {
+        /** @var Database $db */
+        $db = App::get('database');
+
+        if (!isset($this->id)) {
+            return false; // Cannot delete without an ID
+        }
+
+        $query = "DELETE FROM " . static::$table . " WHERE id = ?";
+        $result = $db->query($query, [$this->id]);
+
+        return $result > 0; // Return true if rows were affected
     }
 }

@@ -8,7 +8,7 @@ class Auth
 {
     public static $user = null;
 
-    public static function attemp(string $email, string $password): bool
+    public static function attemp(string $email, string $password, bool $remember = false): bool
     {
         $user = User::findByEmail($email);
 
@@ -17,6 +17,10 @@ class Auth
             session_regenerate_id(true);
 
             $_SESSION['user_id'] = $user->id;
+
+            if ($remember) {
+                RememberMe::createToken($user->id);
+            }
 
             return true;
         }
@@ -28,7 +32,8 @@ class Auth
     {
         if (static::$user === null) {
             $userId = $_SESSION['user_id'] ?? null;
-            static::$user = $userId ? User::find($userId) : null;
+
+            static::$user = $userId ? User::find($userId) : RememberMe::user();
         }
 
         return static::$user;
@@ -36,6 +41,7 @@ class Auth
 
     public static function logout(): void
     {
+        RememberMe::clearToken();
         $_SESSION = [];
         session_destroy();
         static::$user = null;

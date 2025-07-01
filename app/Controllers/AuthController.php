@@ -24,8 +24,9 @@ class AuthController
         //TODO: CSRF toekn validation
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
+        $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;
 
-        if (Auth::attemp($email, $password)) {
+        if (Auth::attemp($email, $password, $remember)) {
             Router::redirect('/');
         }
 
