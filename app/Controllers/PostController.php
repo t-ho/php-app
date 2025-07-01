@@ -11,7 +11,17 @@ class PostController
 {
     public function index(): string
     {
-        return 'List of Posts';
+        $search = $_GET['search'] ?? '';
+        $posts = Post::getRecent(5, $search);
+
+        return View::render(
+            template: 'post/index',
+            data: [
+              'posts' => $posts,
+              'search' => $search,
+            ],
+            layout: 'layouts/main'
+        );
     }
 
     public function show(string $id): string
