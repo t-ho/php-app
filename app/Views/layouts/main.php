@@ -15,6 +15,14 @@
     <nav>
       <a href="/">Home</a>
       <a href="/posts">Posts</a>
+      <?php if ($user) : ?>
+        <form action="/logout" method="POST" style="display: inline;">
+          <button type="submit">Logout(<?= $user->email ?>)</button>
+        </form>
+      <?php else : ?>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      <?php endif; ?>
     </nav>
   <main>
     <?= $content ?>

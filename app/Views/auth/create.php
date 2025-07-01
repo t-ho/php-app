@@ -1,6 +1,6 @@
 <h2>Login</h2>
 
-<?php if (isset($error)): ?>
+<?php if (isset($error)) : ?>
   <p style="color: red"><?= e($error) ?></p>
 <?php endif; ?>
 

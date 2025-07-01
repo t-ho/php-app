@@ -37,4 +37,11 @@ class AuthController
             layout: 'layouts/main'
         );
     }
+
+    public function destroy(): void
+    {
+        Auth::logout();
+
+        Router::redirect('/login');
+    }
 }

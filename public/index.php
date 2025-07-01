@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Services\Auth;
 use Core\Router;
+use Core\View;
 
 require_once __DIR__ . '/../bootstrap.php';
 session_start();
@@ -13,6 +15,8 @@ require_once __DIR__ . '/../routes.php';
 foreach (glob(__DIR__ . '/../app/Helpers/*.php') as $file) {
     require_once $file;
 }
+
+View::share('user', Auth::user());
 
 $uri  = parse_url($_SERVER['REQUEST_URI'])['path'];
 $method = $_SERVER['REQUEST_METHOD'];

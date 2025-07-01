@@ -6,6 +6,8 @@ use App\Models\User;
 
 class Auth
 {
+    public static $user = null;
+
     public static function attemp(string $email, string $password): bool
     {
         $user = User::findByEmail($email);
@@ -20,5 +22,22 @@ class Auth
         }
 
         return false;
+    }
+
+    public static function user(): ?User
+    {
+        if (static::$user === null) {
+            $userId = $_SESSION['user_id'] ?? null;
+            static::$user = $userId ? User::find($userId) : null;
+        }
+
+        return static::$user;
+    }
+
+    public static function logout(): void
+    {
+        $_SESSION = [];
+        session_destroy();
+        static::$user = null;
     }
 }
