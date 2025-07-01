@@ -6,9 +6,14 @@ class View
 {
     public static function render(string $template, array $data = [], ?string $layout = null): string
     {
-        $content = self::renderTemplate($template, $data);
+        $content = static::renderTemplate($template, $data);
 
-        return self::renderLayout($layout, $data, $content);
+        return static::renderLayout($layout, $data, $content);
+    }
+
+    public static function partial(string $template, array $data = []): string
+    {
+        return static::renderTemplate("/partials/{$template}", $data);
     }
 
     protected static function renderTemplate(string $template, array $data): string
