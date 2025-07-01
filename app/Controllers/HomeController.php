@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\Post;
 use Core\View;
 
-
 class HomeController
 {
     public function index(): string
