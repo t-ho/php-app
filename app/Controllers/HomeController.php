@@ -2,16 +2,20 @@
 
 namespace App\Controllers;
 
+use App\Models\Post;
 use Core\View;
+
 
 class HomeController
 {
     public function index(): string
     {
+        $posts = Post::getRecent(5);
+
         return View::render(
             template: 'home/index',
             data: [
-               'message' => 'This is the home page.'
+              'posts' => $posts,
             ],
             layout: 'layouts/main'
         );
