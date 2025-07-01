@@ -4,35 +4,35 @@ declare(strict_types=1);
 
 namespace Core;
 
-use PDO;
-
 abstract class Model
 {
     protected static string $table;
 
     public static function all(): array
     {
+        /** @var Database $db */
         $db = App::get('database');
-        $results = $db->query("SELECT * FROM " . static::$table)
-          ->fetchAll(PDO::FETCH_ASSOC);
 
-        return array_map(
-            [static::class, 'createFromArray'],
-            $results
+        return $db->fetchAll(
+            sql: "SELECT * FROM " . static::$table,
+            className: static::class
         );
     }
 
     public static function find(mixed $id): static|null
     {
+        /** @var Database $db */
         $db = App::get('database');
-        $results = $db->query("SELECT * FROM " . static::$table . " WHERE id = ?", [$id])
-          ->fetch(PDO::FETCH_ASSOC);
-
-        return $results ? static::createFromArray($results) : null;
+        return $db->fetch(
+            sql: "SELECT * FROM " . static::$table . " WHERE id = ?",
+            params: [$id],
+            className: static::class
+        );
     }
 
     public static function create(array $data): static
     {
+        /** @var Database $db */
         $db = App::get('database');
         $columns = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_fill(0, count($data), '?'));
@@ -41,16 +41,5 @@ abstract class Model
         $db->query($sql, array_values($data));
 
         return static::find($db->lastInsertId());
-    }
-
-    protected static function createFromArray(array $data): static
-    {
-        $instance = new static();
-        foreach ($data as $key => $value) {
-            if (property_exists($instance, $key)) {
-                $instance->{$key} = $value;
-            }
-        }
-        return $instance;
     }
 }
