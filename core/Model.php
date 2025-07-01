@@ -8,7 +8,7 @@ use PDO;
 
 abstract class Model
 {
-    protected static $table;
+    protected static string $table;
 
     public static function all(): array
     {
@@ -22,7 +22,7 @@ abstract class Model
         );
     }
 
-    public function find(mixed $id): static|null
+    public static function find(mixed $id): static|null
     {
         $db = App::get('database');
         $results = $db->query("SELECT * FROM " . static::$table . " WHERE id = ?", [$id])
@@ -31,7 +31,7 @@ abstract class Model
         return $results ? static::createFromArray($results) : null;
     }
 
-    public function create(array $data): static
+    public static function create(array $data): static
     {
         $db = App::get('database');
         $columns = implode(', ', array_keys($data));
