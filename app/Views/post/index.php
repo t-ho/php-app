@@ -2,7 +2,7 @@
 <h2>All Posts</h2>
 
 <form action="" method="GET">
-  <input type="text" name="search" placeholder="Search posts..." value="<?= htmlspecialchars($search) ?>">
+  <input type="text" name="search" placeholder="Search posts..." value="<?= e($search) ?>">
   <button type="submit">Search</button>
 </form>
 

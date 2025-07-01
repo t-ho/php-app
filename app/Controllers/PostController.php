@@ -13,7 +13,7 @@ class PostController
     {
         $search = $_GET['search'] ?? '';
         $page = $_GET['page'] ?? 1;
-        $limit = 2;
+        $limit = 5;
 
         $posts = Post::getRecent($limit, $page, $search);
         $total = Post::count($search);
