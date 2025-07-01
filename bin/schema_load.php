@@ -9,30 +9,26 @@ use Core\App;
 $db = App::get('database');
 
 $schemaFile = __DIR__ . '/../database/schema.sql';
-try {
-    $sql = file_get_contents($schemaFile);
 
-    if ($sql === false) {
-        throw new RuntimeException("Failed to read schema file.");
-    }
+$sql = file_get_contents($schemaFile);
 
-    // Strip -- line comments
-    $sql = preg_replace('/--.*(\n|$)/', '', $sql);
-
-    // Strip /* */ block comments
-    $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
-
-    // Split by semicolon
-    $parts = array_filter(array_map('trim', explode(';', $sql)));
-
-    foreach ($parts as $part) {
-        if (!empty($part)) {
-            $db->query($part);
-        }
-    }
-
-    echo "Database schema loaded successfully." . PHP_EOL;
-} catch (Exception $e) {
-    echo "Error: " . $e->getMessage() . PHP_EOL;
-    exit;
+if ($sql === false) {
+    throw new RuntimeException("Failed to read schema file.");
 }
+
+// Strip -- line comments
+$sql = preg_replace('/--.*(\n|$)/', '', $sql);
+
+// Strip /* */ block comments
+$sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
+
+// Split by semicolon
+$parts = array_filter(array_map('trim', explode(';', $sql)));
+
+foreach ($parts as $part) {
+    if (!empty($part)) {
+        $db->query($part);
+    }
+}
+
+echo "Database schema loaded successfully." . PHP_EOL;
