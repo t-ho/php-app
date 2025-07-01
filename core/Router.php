@@ -24,6 +24,12 @@ class Router
         exit;
     }
 
+    public static function redirect(string $uri): void
+    {
+        header("Location: {$uri}");
+        exit;
+    }
+
     public function dispatch(string $uri, string $method): string
     {
         $route = $this->findRoute($uri, $method);
