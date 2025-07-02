@@ -21,7 +21,7 @@ class Comment extends Model
         $db = App::get('database');
 
         return $db->fetchAll(
-            query: "SELECT * FROM " . static::$table . " WHERE post_id = ?",
+            query: "SELECT * FROM " . static::$table . " WHERE post_id = ? ORDER BY created_at DESC",
             params: [$postId],
             className: static::class
         );
