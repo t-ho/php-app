@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Authorization;
 use App\Services\Csrf;
 use Core\View;
 
@@ -39,5 +40,12 @@ if (!function_exists('csrf_token')) {
         return <<<TAG
         <input type="hidden" name="{$tokenName}" value="{$token}" />
         TAG;
+    }
+}
+
+if (!function_exists('isAuthorizedFor')) {
+    function isAuthorizedFor(string $action, mixed $resource = null): bool
+    {
+        return Authorization::isAuthorizedFor($action, $resource);
     }
 }

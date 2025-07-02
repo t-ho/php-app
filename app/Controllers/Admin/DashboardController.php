@@ -4,12 +4,15 @@ namespace App\Controllers\Admin;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Services\Authorization;
 use Core\View;
 
 class DashboardController
 {
     public function index()
     {
+        Authorization::ensureAuthorized('access_dashboard');
+
         $totalPosts = Post::count();
         $totalComments = Comment::count();
 

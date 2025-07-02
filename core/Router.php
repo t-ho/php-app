@@ -46,6 +46,15 @@ class Router
         exit;
     }
 
+    public static function forbidden(): void
+    {
+        http_response_code(403);
+        echo View::render(
+            template: 'errors/403',
+        );
+        exit;
+    }
+
 
     public static function pageExpired(): void
     {
