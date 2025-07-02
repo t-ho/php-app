@@ -8,11 +8,11 @@ class Router
     protected array $globalMiddleware = [];
     protected array $routeMiddleware = [];
 
-    public function add(string $method, string $uri, string $controller, array $middlewares = []): void
+    public function add(string $method, string $path, string $controller, array $middlewares = []): void
     {
         $this->routes[] = [
             'method' => $method,
-            'uri' => $uri,
+            'path' => $path,
             'controller' => $controller,
             'middlewares' => $middlewares,
         ];
@@ -62,9 +62,9 @@ class Router
         exit;
     }
 
-    public function dispatch(string $uri, string $method): string
+    public function dispatch(string $path, string $method): string
     {
-        $route = $this->findRoute($uri, $method);
+        $route = $this->findRoute($path, $method);
 
         if (!$route) {
             static::notFound();
@@ -93,10 +93,10 @@ class Router
         return $next();
     }
 
-    protected function findRoute(string $uri, string $method): ?array
+    protected function findRoute(string $path, string $method): ?array
     {
         foreach ($this->routes as $route) {
-            $params = $this->matchRoute($route['uri'], $uri);
+            $params = $this->matchRoute($route['path'], $path);
             if ($params !== null && $route['method'] === $method) {
                 return [...$route, 'params' => $params];
             }
@@ -105,10 +105,10 @@ class Router
         return null;
     }
 
-    protected function matchRoute(string $routeUri, string $requestUri): ?array
+    protected function matchRoute(string $routePath, string $requestPath): ?array
     {
-        $routeSegments = explode('/', trim($routeUri, '/'));
-        $requestSegments = explode('/', trim($requestUri, '/'));
+        $routeSegments = explode('/', trim($routePath, '/'));
+        $requestSegments = explode('/', trim($requestPath, '/'));
 
         if (count($routeSegments) !== count($requestSegments)) {
             return null;

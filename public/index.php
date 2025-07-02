@@ -14,7 +14,7 @@ foreach (glob(__DIR__ . '/../app/Helpers/*.php') as $file) {
     require_once $file;
 }
 
-$uri  = parse_url($_SERVER['REQUEST_URI'])['path'];
+$path = parse_url($_SERVER['REQUEST_URI'])['path'];
 $method = $_SERVER['REQUEST_METHOD'];
 
-echo $router->dispatch(uri: $uri, method: $method);
+echo $router->dispatch(path: $path, method: $method);
