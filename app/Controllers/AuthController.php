@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\Auth;
+use App\Services\Csrf;
 use Core\Router;
 use Core\View;
 
@@ -21,7 +22,10 @@ class AuthController
 
     public function store(): string
     {
-        //TODO: CSRF toekn validation
+        if (!Csrf::isTokenValid()) {
+            Router::pageExpired();
+        }
+
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
         $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;

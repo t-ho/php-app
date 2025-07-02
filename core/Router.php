@@ -24,6 +24,15 @@ class Router
         exit;
     }
 
+    public static function pageExpired(): void
+    {
+        http_response_code(419);
+        echo View::render(
+            template: 'errors/419',
+        );
+        exit;
+    }
+
     public static function redirect(string $uri): void
     {
         header("Location: {$uri}");

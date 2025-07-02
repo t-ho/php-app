@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Csrf;
 use Core\View;
 
 if (!function_exists('partial')) {
@@ -27,5 +28,16 @@ if (!function_exists('e')) {
             'url'  => rawurlencode($value),
             default => throw new InvalidArgumentException("Invalid context"),
         };
+    }
+}
+
+if (!function_exists('csrf_token')) {
+    function csrf_token(): string
+    {
+        $token = Csrf::getToken();
+        $tokenName = Csrf::CSRF_TOKEN_NAME;
+        return <<<TAG
+        <input type="hidden" name="{$tokenName}" value="{$token}" />
+        TAG;
     }
 }
