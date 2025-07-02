@@ -4,26 +4,16 @@ namespace App\Controllers;
 
 use App\Models\Comment;
 use App\Services\Auth;
-use App\Services\Csrf;
 use Core\Router;
 
 class CommentController
 {
     public function store(string $id)
     {
-        if (!Csrf::isTokenValid()) {
-            Router::pageExpired();
-        }
-
-        $user = Auth::user();
-        if (!$user) {
-            Router::unauthorized();
-        }
-
         $content = $_POST['content'] ?? '';
         Comment::create([
             'post_id' => $id,
-            'user_id' => $user->id,
+            'user_id' => Auth::user()->id,
             'content' => $content,
         ]);
 

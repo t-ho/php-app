@@ -22,10 +22,6 @@ class AuthController
 
     public function store(): string
     {
-        if (!Csrf::isTokenValid()) {
-            Router::pageExpired();
-        }
-
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
         $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;

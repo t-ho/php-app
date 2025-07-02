@@ -25,12 +25,12 @@ class Csrf
             return true; // No CSRF check for safe methods
         }
 
-        $csrfToken = $token ?? $_POST[self::CSRF_TOKEN_NAME] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+        $csrfToken = $token ?? $_POST[self::CSRF_TOKEN_NAME] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
 
         if (
-            $csrfToken
+            !empty($csrfToken)
             && !self::isTokenExpired()
-            && hash_equals($_SESSION['csrf_token']['token'], $csrfToken)
+            && hash_equals($_SESSION['csrf_token']['token'] ?? '', $csrfToken)
         ) {
             return true; // CSRF token is valid
         }

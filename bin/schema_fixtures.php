@@ -11,19 +11,19 @@ $users = [
   [
     'name' => 'Admin User',
     'email' => 'admin@tdev.app',
-    'password' => password_hash('password', PASSWORD_DEFAULT),
+    'password' => password_hash('Test1234', PASSWORD_DEFAULT),
     'role' => 'admin',
   ],
   [
     'name' => 'John Doe',
     'email' => 'john@tdev.app',
-    'password' => password_hash('password', PASSWORD_DEFAULT),
+    'password' => password_hash('Test1234', PASSWORD_DEFAULT),
     'role' => 'user',
   ],
   [
     'name' => 'Lena Hartley',
     'email' => 'lena@tdev.app',
-    'password' => password_hash('password', PASSWORD_DEFAULT),
+    'password' => password_hash('Test1234', PASSWORD_DEFAULT),
     'role' => 'user',
   ]
 ];
