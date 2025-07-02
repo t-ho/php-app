@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\Auth;
-use App\Services\Csrf;
 use Core\Router;
 use Core\View;
 

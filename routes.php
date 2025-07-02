@@ -20,3 +20,6 @@ $router->add('POST', '/posts/{id}/comments', 'CommentController@store', ['auth']
 $router->add('GET', '/login', 'AuthController@create');
 $router->add('POST', '/login', 'AuthController@store');
 $router->add('POST', '/logout', 'AuthController@destroy');
+
+// Admin routes
+$router->add('GET', '/admin/dashboard', 'Admin\DashboardController@index', ['auth']);
