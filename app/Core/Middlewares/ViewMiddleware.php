@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Middlewares;
+namespace App\Core\Middlewares;
 
+use App\Core\View;
 use App\Services\Auth;
-use Core\View;
+
 
 class ViewMiddleware implements MiddlewareInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Middlewares;
+namespace App\Core\Middlewares;
 
+use App\Core\Router;
 use App\Services\Csrf;
-use Core\Router;
 
 class CsrfMiddleware implements MiddlewareInterface
 {

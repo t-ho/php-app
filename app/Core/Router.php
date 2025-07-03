@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace App\Core;
 
-use App\Middlewares\MiddlewareInterface;
+use App\Core\Middlewares\MiddlewareInterface;
 use InvalidArgumentException;
 
 class Router

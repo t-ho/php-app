@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core;
+namespace App\Core;
 
 use ErrorException;
 use Throwable;
@@ -95,7 +95,7 @@ class ErrorHandler
 
         $logMessage .= PHP_EOL . "Stack Trace: " . $exception->getTraceAsString() . PHP_EOL;
 
-        error_log($logMessage, 3, __DIR__ . '/../logs/error.log');
+        error_log($logMessage, 3, __DIR__ . '/../../logs/error.log');
     }
 
     private static function formatErrorMessage(Throwable $exception, string $format): string
@@ -112,7 +112,7 @@ class ErrorHandler
 
     private static function createLogFile(): void
     {
-        $logDir = __DIR__ . '/../logs';
+        $logDir = __DIR__ . '/../../logs';
         $logFile = $logDir . '/error.log';
 
         if (!is_dir($logDir)) {

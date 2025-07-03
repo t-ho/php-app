@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Comment;
-use Core\Router;
+use App\Core\Router;
 
 class Authorization
 {

@@ -2,8 +2,8 @@
 
 use App\Services\Authorization;
 use App\Services\Csrf;
-use Core\App;
-use Core\View;
+use App\Core\App;
+use App\Core\View;
 
 if (!function_exists('partial')) {
     function partial(string $template, array $data = []): string

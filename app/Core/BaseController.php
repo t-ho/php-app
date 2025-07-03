@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Core;
 
-use Core\App;
-use Core\Router;
-use Core\View;
+use App\Core\App;
+use App\Core\Router;
+use App\Core\View;
 
 abstract class BaseController
 {

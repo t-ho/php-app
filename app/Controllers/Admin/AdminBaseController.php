@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\BaseController;
+use App\Core\BaseController;;
 
 class AdminBaseController extends BaseController
 {

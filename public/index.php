@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Core\Router;
+use App\Core\Router;
 
 require_once __DIR__ . '/../bootstrap.php';
 session_start();

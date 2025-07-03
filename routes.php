@@ -4,9 +4,9 @@
 * @var Core\Router $router
 */
 
-use App\Middlewares\ViewMiddleware;
-use App\Middlewares\AuthMiddleware;
-use App\Middlewares\CsrfMiddleware;
+use App\Core\Middlewares\AuthMiddleware;
+use App\Core\Middlewares\CsrfMiddleware;
+use App\Core\Middlewares\ViewMiddleware;
 
 $router->addGlobalMiddleware(ViewMiddleware::class);
 $router->addGlobalMiddleware(CsrfMiddleware::class);

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\BaseController;
 use App\Models\Post;
 
 class HomeController extends BaseController

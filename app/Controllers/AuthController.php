@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Core\BaseController;;
 use App\Services\Auth;
-use Core\Router;
+
 
 class AuthController extends BaseController
 {
@@ -42,6 +43,6 @@ class AuthController extends BaseController
     {
         Auth::logout();
 
-        Router::redirect('/login');
+        $this->redirect('/login');
     }
 }

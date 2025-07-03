@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Core\App;
-use Core\Database;
-use Core\ErrorHandler;
+use App\Core\App;
+use App\Core\Database;
+use App\Core\ErrorHandler;
 
 set_exception_handler([ErrorHandler::class, 'handleException']);
 set_error_handler([ErrorHandler::class, 'handleError']);

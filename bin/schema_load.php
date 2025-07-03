@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../bootstrap.php';
 
-use Core\App;
+use App\Core\App;
 
 $db = App::get('database');
 

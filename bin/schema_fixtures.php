@@ -5,7 +5,7 @@ require_once __DIR__ . '/../bootstrap.php';
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
-use Core\App;
+use App\Core\App;
 
 $users = [
   [

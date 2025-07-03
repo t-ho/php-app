@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Core\BaseController;;
 use App\Models\Comment;
 use App\Services\Auth;
 use App\Services\Authorization;
-use Core\Router;
 
 class CommentController extends BaseController
 {
@@ -20,6 +20,6 @@ class CommentController extends BaseController
             'content' => $content,
         ]);
 
-        Router::redirect("/posts/{$id}#comments");
+        $this->redirect("/posts/{$id}#comments");
     }
 }
