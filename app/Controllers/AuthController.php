@@ -14,7 +14,7 @@ class AuthController extends BaseController
         $this->setTitle('Login');
 
         return $this->renderView(
-            template: 'auth/create',
+            template: 'auth/login',
             layout: 'layouts/main'
         );
     }
@@ -30,7 +30,7 @@ class AuthController extends BaseController
         }
 
         return $this->renderView(
-            template: 'auth/create',
+            template: 'auth/login',
             data: [
                 'error' => 'Invalid credentials.'
             ],
