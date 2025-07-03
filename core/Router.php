@@ -2,14 +2,20 @@
 
 namespace Core;
 
+use InvalidArgumentException;
+
 class Router
 {
     protected array $routes = [];
     protected array $globalMiddleware = [];
     protected array $routeMiddleware = [];
 
-    public function add(string $method, string $path, string $controller, array $middlewares = []): void
-    {
+    public function add(
+        string $method,
+        string $path,
+        string $controller,
+        array $middlewares = [],
+    ): void {
         $this->routes[] = [
             'method' => $method,
             'path' => $path,
@@ -18,12 +24,12 @@ class Router
         ];
     }
 
-    public function addGlobalMiddleware(string $middleware): void
+    public function addGlobalMiddleware(string|Middleware $middleware): void
     {
         $this->globalMiddleware[] = $middleware;
     }
 
-    public function addRouteMiddleware(string $name, string $middleware): void
+    public function addRouteMiddleware(string $name, string|Middleware $middleware): void
     {
         $this->routeMiddleware[$name] = $middleware;
     }
@@ -94,10 +100,18 @@ class Router
     protected function runMiddleware(array $middlewares, callable $target): mixed
     {
         $next = $target;
-
         foreach (array_reverse($middlewares) as $middleware) {
-            $next = fn () => (new $middleware())->handle($next);
+            $instance = is_string($middleware) ? new $middleware() : $middleware;
+
+            if (!$instance instanceof Middleware) {
+                throw new InvalidArgumentException(
+                    'Middleware must be a class name or instance implementing Middleware interface.'
+                );
+            }
+
+            $next = fn () => $instance->handle($next);
         }
+
 
         return $next();
     }

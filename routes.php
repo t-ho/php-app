@@ -57,3 +57,39 @@ $router->add(
     controller: 'Admin\DashboardController@index',
     middlewares: ['auth']
 );
+$router->add(
+    method: 'GET',
+    path: '/admin/posts',
+    controller: 'Admin\PostController@index',
+    middlewares: ['auth']
+);
+$router->add(
+    method: 'GET',
+    path: '/admin/posts/create',
+    controller: 'Admin\PostController@create',
+    middlewares: ['auth']
+);
+$router->add(
+    method: 'POST',
+    path: '/admin/posts',
+    controller: 'Admin\PostController@store',
+    middlewares: ['auth']
+);
+$router->add(
+    method: 'GET',
+    path: '/admin/posts/{id}/edit',
+    controller: 'Admin\PostController@edit',
+    middlewares: ['auth']
+);
+$router->add(
+    method: 'POST',
+    path: '/admin/posts/{id}',
+    controller: 'Admin\PostController@update',
+    middlewares: ['auth']
+);
+$router->add(
+    method: 'POST',
+    path: '/admin/posts/{id}/delete',
+    controller: 'Admin\PostController@delete',
+    middlewares: ['auth']
+);

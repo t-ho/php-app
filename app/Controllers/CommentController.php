@@ -9,7 +9,7 @@ use Core\Router;
 
 class CommentController
 {
-    public function store(string $id)
+    public function store(int $id): void
     {
         Authorization::ensureAuthorized('create_comment');
 
@@ -20,6 +20,6 @@ class CommentController
             'content' => $content,
         ]);
 
-        return Router::redirect("/posts/{$id}#comments");
+        Router::redirect("/posts/{$id}#comments");
     }
 }

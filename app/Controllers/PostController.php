@@ -30,7 +30,7 @@ class PostController
         );
     }
 
-    public function show(string $id): string
+    public function show(int $id): string
     {
         $post = Post::find($id);
 

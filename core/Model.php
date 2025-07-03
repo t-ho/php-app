@@ -32,6 +32,15 @@ abstract class Model
         );
     }
 
+    public static function findOrFail(mixed $id): static
+    {
+        $model = static::find($id);
+        if ($model === false) {
+            throw new \RuntimeException("Model not found with ID: {$id}");
+        }
+        return $model;
+    }
+
     public static function create(array $data): static
     {
         /** @var Database $db */
