@@ -2,12 +2,11 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\BaseController;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Services\Authorization;
 
-class DashboardController extends BaseController
+class DashboardController extends AdminBaseController
 {
     public function index()
     {
@@ -22,12 +21,12 @@ class DashboardController extends BaseController
         return $this->renderView(
             template: 'admin/dashboard/index',
             data: [
+                'title' => 'Dashboard',
                 'totalPosts' => $totalPosts,
                 'totalComments' => $totalComments,
                 'recentPosts' => $recentPosts,
                 'recentComments' => $recentComments,
             ],
-            layout: 'layouts/admin'
         );
     }
 }

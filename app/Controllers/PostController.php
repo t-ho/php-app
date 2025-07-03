@@ -15,17 +15,16 @@ class PostController extends BaseController
 
         $posts = Post::getRecent($limit, $page, $search);
         $total = Post::count($search);
-        $this->setTitle('Manage Posts');
 
         return $this->renderView(
             template: 'post/index',
             data: [
+              'title' => 'All Posts',
               'posts' => $posts,
               'search' => $search,
               'currentPage' => $page,
               'totalPages' => ceil($total / $limit),
             ],
-            layout: 'layouts/main'
         );
     }
 
@@ -46,7 +45,6 @@ class PostController extends BaseController
                 'post' => $post,
                 'comments' => $comments,
             ],
-            layout: 'layouts/main'
         );
     }
 }

@@ -8,11 +8,13 @@ use Core\View;
 
 abstract class BaseController
 {
-    protected array $data = [];
+    private string $defaultTitleSuffix;
+    private string $defaultLayout;
 
     public function __construct()
     {
-        $this->data['title'] = App::get('config')['app']['name'];
+        $this->defaultTitleSuffix = App::get('config')['app']['name'];
+        $this->defaultLayout = 'layouts/main';
     }
 
     /**
@@ -72,27 +74,27 @@ abstract class BaseController
     }
 
     /**
-     * Set the page title
+     * Set the default title suffix
      */
-    protected function setTitle(?string $title): void
+    protected function setDefaultTitleSuffix(string $titleSuffix): void
     {
-        $this->data['title'] = ($title ? $title . ' - ' : '') . App::get('config')['app']['name'];
+        $this->defaultTitleSuffix = $titleSuffix ? $titleSuffix : App::get('config')['app']['name'];
     }
 
     /**
-     * Add data to be passed to views
+     * Set the default layout
      */
-    protected function addData(string $key, $value): void
+    protected function setDefaultLayout(string $layout): void
     {
-        $this->data[$key] = $value;
+        $this->defaultLayout = $layout;
     }
 
     /**
-     * Merge data array with existing data
-     */
-    protected function mergeData(array $data): void
+    * Create a page title
+    */
+    protected function createTitle(string $title): string
     {
-        $this->data = array_merge($this->data, $data);
+        return $title ? $title . ' - ' . $this->defaultTitleSuffix : $this->defaultTitleSuffix;
     }
 
     /**
@@ -100,7 +102,10 @@ abstract class BaseController
      */
     protected function renderView(string $template, array $data = [], ?string $layout = null): string
     {
-        return View::render($template, array_merge($this->data, $data), $layout);
+        $data = [...$data, 'title' => static::createTitle($data['title'] ?? '')];
+        $layout = $layout ?? $this->defaultLayout;
+
+        return View::render($template, $data, $layout);
     }
 
     /**

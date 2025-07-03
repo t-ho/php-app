@@ -11,11 +11,11 @@ class AuthController extends BaseController
 {
     public function index(): string
     {
-        $this->setTitle('Login');
-
         return $this->renderView(
             template: 'auth/login',
-            layout: 'layouts/main'
+            data: [
+              'title' => 'Login'
+            ],
         );
     }
 
@@ -32,9 +32,9 @@ class AuthController extends BaseController
         return $this->renderView(
             template: 'auth/login',
             data: [
+                'title' => 'Login',
                 'error' => 'Invalid credentials.'
             ],
-            layout: 'layouts/main'
         );
     }
 

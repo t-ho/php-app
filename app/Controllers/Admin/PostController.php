@@ -2,12 +2,11 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\BaseController;
 use App\Models\Post;
 use App\Services\Auth;
 use App\Services\Authorization;
 
-class PostController extends BaseController
+class PostController extends AdminBaseController
 {
     public function index(): string
     {
@@ -23,12 +22,12 @@ class PostController extends BaseController
         return $this->renderView(
             template: 'admin/post/index',
             data: [
+              'title' => 'Manage Posts',
               'posts' => $posts,
               'search' => $search,
               'currentPage' => $page,
               'totalPages' => ceil($total / $limit),
             ],
-            layout: 'layouts/admin'
         );
     }
 
@@ -38,7 +37,6 @@ class PostController extends BaseController
 
         return $this->renderView(
             template: 'admin/post/create',
-            layout: 'layouts/admin'
         );
     }
 
@@ -68,7 +66,6 @@ class PostController extends BaseController
             data: [
               'post' => $post,
             ],
-            layout: 'layouts/admin'
         );
     }
 

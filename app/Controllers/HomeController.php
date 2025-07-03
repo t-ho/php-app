@@ -10,14 +10,12 @@ class HomeController extends BaseController
     {
         $posts = Post::getRecent(5);
 
-        $this->setTitle('Home');
-
         return $this->renderView(
             template: 'home/index',
             data: [
               'posts' => $posts,
+              'title' => 'Home'
             ],
-            layout: 'layouts/main'
         );
     }
 }
