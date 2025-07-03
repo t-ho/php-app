@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use App\Middlewares\MiddlewareInterface;
 use InvalidArgumentException;
 
 class Router
@@ -24,12 +25,12 @@ class Router
         ];
     }
 
-    public function addGlobalMiddleware(string|Middleware $middleware): void
+    public function addGlobalMiddleware(string|MiddlewareInterface $middleware): void
     {
         $this->globalMiddleware[] = $middleware;
     }
 
-    public function addRouteMiddleware(string $name, string|Middleware $middleware): void
+    public function addRouteMiddleware(string $name, string|MiddlewareInterface $middleware): void
     {
         $this->routeMiddleware[$name] = $middleware;
     }
@@ -103,7 +104,7 @@ class Router
         foreach (array_reverse($middlewares) as $middleware) {
             $instance = is_string($middleware) ? new $middleware() : $middleware;
 
-            if (!$instance instanceof Middleware) {
+            if (!$instance instanceof MiddlewareInterface) {
                 throw new InvalidArgumentException(
                     'Middleware must be a class name or instance implementing Middleware interface.'
                 );

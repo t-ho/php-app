@@ -3,10 +3,9 @@
 namespace App\Middlewares;
 
 use App\Services\Auth;
-use Core\Middleware;
 use Core\Router;
 
-class AuthMiddleware implements Middleware
+class AuthMiddleware implements MiddlewareInterface
 {
     public function handle(callable $next)
     {

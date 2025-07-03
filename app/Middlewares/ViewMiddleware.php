@@ -3,10 +3,9 @@
 namespace App\Middlewares;
 
 use App\Services\Auth;
-use Core\Middleware;
 use Core\View;
 
-class ViewMiddleware implements Middleware
+class ViewMiddleware implements MiddlewareInterface
 {
     public function handle(callable $next)
     {

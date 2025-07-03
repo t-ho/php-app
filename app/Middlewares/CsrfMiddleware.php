@@ -3,10 +3,9 @@
 namespace App\Middlewares;
 
 use App\Services\Csrf;
-use Core\Middleware;
 use Core\Router;
 
-class CsrfMiddleware implements Middleware
+class CsrfMiddleware implements MiddlewareInterface
 {
     public function handle(callable $next)
     {
