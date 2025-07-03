@@ -8,7 +8,7 @@ use App\Services\Authorization;
 
 class DashboardController extends AdminBaseController
 {
-    public function index()
+    public function index(array $params)
     {
         Authorization::ensureAuthorized('access_dashboard');
 

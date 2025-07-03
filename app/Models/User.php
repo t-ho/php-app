@@ -20,6 +20,7 @@ class User extends Model
     {
         /** @var \Core\Database $db */
         $db = App::get('database');
+        $email = strtolower(trim($email));
         $result = $db->fetch(
             query: "SELECT * FROM " . static::$table . " WHERE email = ?",
             params: [$email],
@@ -27,5 +28,19 @@ class User extends Model
         );
 
         return $result ? $result : null;
+    }
+
+    public static function createUser(array $data): ?User
+    {
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+
+        $userData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $hashedPassword,
+            'role' => 'user'
+        ];
+
+        return static::create($userData);
     }
 }

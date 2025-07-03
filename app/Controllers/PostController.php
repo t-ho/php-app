@@ -8,7 +8,7 @@ use App\Models\Post;
 
 class PostController extends BaseController
 {
-    public function index(): string
+    public function index($params): string
     {
         $search = $_GET['search'] ?? '';
         $page = $_GET['page'] ?? 1;
@@ -29,16 +29,16 @@ class PostController extends BaseController
         );
     }
 
-    public function show(int $id): string
+    public function show(array $params): string
     {
-        $post = Post::find($id);
+        $post = Post::find($params['postId']);
 
         if (!$post) {
             $this->redirectToNotFound();
         }
 
-        $comments = Comment::forPost($id);
-        Post::incrementViews($id);
+        $comments = Comment::forPost($params['postId']);
+        Post::incrementViews($params['postId']);
 
         return $this->renderView(
             template: 'post/show',

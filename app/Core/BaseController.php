@@ -20,7 +20,7 @@ abstract class BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(array $params)
     {
         $this->notImplemented(__METHOD__);
     }
@@ -28,7 +28,7 @@ abstract class BaseController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(array $params)
     {
         $this->notImplemented(__METHOD__);
     }
@@ -36,7 +36,7 @@ abstract class BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(int $id)
+    public function store(array $params)
     {
         $this->notImplemented(__METHOD__);
     }
@@ -44,7 +44,7 @@ abstract class BaseController
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(array $params)
     {
         $this->notImplemented(__METHOD__);
     }
@@ -52,7 +52,7 @@ abstract class BaseController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id)
+    public function edit(array $params)
     {
         $this->notImplemented(__METHOD__);
     }
@@ -60,7 +60,7 @@ abstract class BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(int $id)
+    public function update(array $params)
     {
         $this->notImplemented(__METHOD__);
     }
@@ -68,7 +68,7 @@ abstract class BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(array $params)
     {
         $this->notImplemented(__METHOD__);
     }
@@ -146,6 +146,37 @@ abstract class BaseController
     protected function redirectToPageExpired(): void
     {
         Router::pageExpired();
+    }
+
+    /**
+    * Sanitize input data
+    */
+    protected function sanitizeInput(array $inputs, bool $stripTags = false, array $excludeKeys = []): array
+    {
+        $sanitized = [];
+
+        foreach ($inputs as $key => $value) {
+            if (in_array($key, $excludeKeys, true)) {
+                // Skip sanitization for excluded keys
+                $sanitized[$key] = $value;
+                continue;
+            }
+
+            if (is_array($value)) {
+                // Recursively sanitize nested arrays
+                $sanitized[$key] = $this->sanitizeInput($value, $stripTags, $excludeKeys);
+            } elseif (is_string($value)) {
+                $value = trim($value);
+                if ($stripTags) {
+                    $value = strip_tags($value);
+                }
+                $sanitized[$key] = $value;
+            } else {
+                $sanitized[$key] = $value;
+            }
+        }
+
+        return $sanitized;
     }
 
     /**

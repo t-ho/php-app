@@ -8,7 +8,7 @@ use App\Services\Authorization;
 
 class PostController extends AdminBaseController
 {
-    public function index(): string
+    public function index(array $params): string
     {
         Authorization::ensureAuthorized('access_manage_posts');
 
@@ -31,7 +31,7 @@ class PostController extends AdminBaseController
         );
     }
 
-    public function create(): string
+    public function create(array $params): string
     {
         Authorization::ensureAuthorized('create_post');
 
@@ -56,9 +56,9 @@ class PostController extends AdminBaseController
         $this->redirect('/admin/posts');
     }
 
-    public function edit(int $id): string
+    public function edit(array $params): string
     {
-        $post = Post::findOrFail($id);
+        $post = Post::findOrFail($params['postId']);
         Authorization::ensureAuthorized('update_post', $post);
 
         return $this->renderView(
@@ -69,9 +69,9 @@ class PostController extends AdminBaseController
         );
     }
 
-    public function update(int $id): void
+    public function update(array $params): void
     {
-        $post = Post::findOrFail($id);
+        $post = Post::findOrFail($params['postId']);
 
         Authorization::ensureAuthorized('update_post', $post);
 
@@ -83,9 +83,9 @@ class PostController extends AdminBaseController
         $this->redirect('/admin/posts');
     }
 
-    public function destroy(int $id): void
+    public function destroy(array $params): void
     {
-        $post = Post::findOrFail($id);
+        $post = Post::findOrFail($params['postId']);
 
         Authorization::ensureAuthorized('delete_post', $post);
 

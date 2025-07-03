@@ -24,16 +24,17 @@ $router->add(
 );
 $router->add(
     method: 'GET',
-    path: '/posts/{id}',
+    path: '/posts/{postId}',
     controller: 'PostController@show'
 );
 $router->add(
     method: 'POST',
-    path: '/posts/{id}/comments',
+    path: '/posts/{postId}/comments',
     controller: 'CommentController@store',
     middlewares: ['auth']
 );
 
+// Authentication routes
 $router->add(
     method: 'GET',
     path: '/login',
@@ -48,6 +49,18 @@ $router->add(
     method: 'POST',
     path: '/logout',
     controller: 'AuthController@logout'
+);
+
+// User routes
+$router->add(
+    method: 'GET',
+    path: '/register',
+    controller: 'UserController@create'
+);
+$router->add(
+    method: 'POST',
+    path: '/register',
+    controller: 'UserController@store'
 );
 
 // Admin routes
@@ -77,19 +90,19 @@ $router->add(
 );
 $router->add(
     method: 'GET',
-    path: '/admin/posts/{id}/edit',
+    path: '/admin/posts/{postId}/edit',
     controller: 'Admin\PostController@edit',
     middlewares: ['auth']
 );
 $router->add(
     method: 'POST',
-    path: '/admin/posts/{id}',
+    path: '/admin/posts/{postId}',
     controller: 'Admin\PostController@update',
     middlewares: ['auth']
 );
 $router->add(
     method: 'POST',
-    path: '/admin/posts/{id}/delete',
+    path: '/admin/posts/{postId}/delete',
     controller: 'Admin\PostController@delete',
     middlewares: ['auth']
 );

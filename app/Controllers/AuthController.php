@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Core\BaseController;;
+use App\Core\BaseController;
 use App\Services\Auth;
-
 
 class AuthController extends BaseController
 {
-    public function index(): string
+    public function index(array $params): string
     {
         return $this->renderView(
             template: 'auth/login',
@@ -22,11 +21,16 @@ class AuthController extends BaseController
 
     public function login(): string
     {
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
-        $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;
+        $data = $this->sanitizeInput(
+            inputs: [
+                'email' => $_POST['email'] ?? '',
+                'password' => $_POST['password'] ?? '',
+                'remember' => isset($_POST['remember']) ? (bool)$_POST['remember'] : false
+            ],
+            excludeKeys: ['password']
+        );
 
-        if (Auth::attemp($email, $password, $remember)) {
+        if (Auth::attemp($data['email'], $data['password'], $data['remember'])) {
             $this->redirect('/');
         }
 

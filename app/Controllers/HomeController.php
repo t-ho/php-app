@@ -7,7 +7,7 @@ use App\Models\Post;
 
 class HomeController extends BaseController
 {
-    public function index(): string
+    public function index($params): string
     {
         $posts = Post::getRecent(5);
 
