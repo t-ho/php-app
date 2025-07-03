@@ -6,30 +6,30 @@ namespace App\Controllers;
 
 use App\Services\Auth;
 use Core\Router;
-use Core\View;
 
-class AuthController
+class AuthController extends BaseController
 {
-    public function create(): string
+    public function index(): string
     {
-        return View::render(
+        $this->setTitle('Login');
+
+        return $this->renderView(
             template: 'auth/create',
-            data: [],
             layout: 'layouts/main'
         );
     }
 
-    public function store(): string
+    public function login(): string
     {
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
         $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;
 
         if (Auth::attemp($email, $password, $remember)) {
-            Router::redirect('/');
+            $this->redirect('/');
         }
 
-        return View::render(
+        return $this->renderView(
             template: 'auth/create',
             data: [
                 'error' => 'Invalid credentials.'
@@ -38,7 +38,7 @@ class AuthController
         );
     }
 
-    public function destroy(): void
+    public function logout(): void
     {
         Auth::logout();
 

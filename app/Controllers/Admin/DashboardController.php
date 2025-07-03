@@ -2,12 +2,12 @@
 
 namespace App\Controllers\Admin;
 
+use App\Controllers\BaseController;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Services\Authorization;
-use Core\View;
 
-class DashboardController
+class DashboardController extends BaseController
 {
     public function index()
     {
@@ -19,7 +19,7 @@ class DashboardController
         $recentPosts = Post::getRecent(5);
         $recentComments = Comment::getRecent(5);
 
-        return View::render(
+        return $this->renderView(
             template: 'admin/dashboard/index',
             data: [
                 'totalPosts' => $totalPosts,

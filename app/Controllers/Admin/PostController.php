@@ -2,13 +2,12 @@
 
 namespace App\Controllers\Admin;
 
+use App\Controllers\BaseController;
 use App\Models\Post;
 use App\Services\Auth;
 use App\Services\Authorization;
-use Core\Router;
-use Core\View;
 
-class PostController
+class PostController extends BaseController
 {
     public function index(): string
     {
@@ -21,7 +20,7 @@ class PostController
         $posts = Post::getRecent($limit, $page, $search);
         $total = Post::count($search);
 
-        return View::render(
+        return $this->renderView(
             template: 'admin/post/index',
             data: [
               'posts' => $posts,
@@ -37,13 +36,13 @@ class PostController
     {
         Authorization::ensureAuthorized('create_post');
 
-        return View::render(
+        return $this->renderView(
             template: 'admin/post/create',
             layout: 'layouts/admin'
         );
     }
 
-    public function store(): void
+    public function store($id): void
     {
         Authorization::ensureAuthorized('create_post');
 
@@ -56,7 +55,7 @@ class PostController
             'user_id' => Auth::user()->id,
         ]);
 
-        Router::redirect('/admin/posts');
+        $this->redirect('/admin/posts');
     }
 
     public function edit(int $id): string
@@ -64,7 +63,7 @@ class PostController
         $post = Post::findOrFail($id);
         Authorization::ensureAuthorized('update_post', $post);
 
-        return View::render(
+        return $this->renderView(
             template: 'admin/post/edit',
             data: [
               'post' => $post,
@@ -84,10 +83,10 @@ class PostController
 
         $post->save();
 
-        Router::redirect('/admin/posts');
+        $this->redirect('/admin/posts');
     }
 
-    public function delete(int $id): void
+    public function destroy(int $id): void
     {
         $post = Post::findOrFail($id);
 
@@ -95,6 +94,6 @@ class PostController
 
         $post->delete();
 
-        Router::redirect('/admin/posts');
+        $this->redirect('/admin/posts');
     }
 }

@@ -37,17 +37,17 @@ $router->add(
 $router->add(
     method: 'GET',
     path: '/login',
-    controller: 'AuthController@create'
+    controller: 'AuthController@index'
 );
 $router->add(
     method: 'POST',
     path: '/login',
-    controller: 'AuthController@store'
+    controller: 'AuthController@login'
 );
 $router->add(
     method: 'POST',
     path: '/logout',
-    controller: 'AuthController@destroy'
+    controller: 'AuthController@logout'
 );
 
 // Admin routes

@@ -3,15 +3,16 @@
 namespace App\Controllers;
 
 use App\Models\Post;
-use Core\View;
 
-class HomeController
+class HomeController extends BaseController
 {
     public function index(): string
     {
         $posts = Post::getRecent(5);
 
-        return View::render(
+        $this->setTitle('Home');
+
+        return $this->renderView(
             template: 'home/index',
             data: [
               'posts' => $posts,

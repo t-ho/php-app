@@ -7,7 +7,7 @@ use App\Services\Auth;
 use App\Services\Authorization;
 use Core\Router;
 
-class CommentController
+class CommentController extends BaseController
 {
     public function store(int $id): void
     {

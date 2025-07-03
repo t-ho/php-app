@@ -2,6 +2,7 @@
 
 use App\Services\Authorization;
 use App\Services\Csrf;
+use Core\App;
 use Core\View;
 
 if (!function_exists('partial')) {
@@ -47,5 +48,28 @@ if (!function_exists('isAuthorizedFor')) {
     function isAuthorizedFor(string $action, mixed $resource = null): bool
     {
         return Authorization::isAuthorizedFor($action, $resource);
+    }
+}
+
+if (!function_exists('config')) {
+    function config(string $key, mixed $default = null): mixed
+    {
+        try {
+            $config = App::get('config');
+
+            $keys = explode('.', $key);
+            $value = $config;
+
+            foreach ($keys as $k) {
+                if (!is_array($value) || !array_key_exists($k, $value)) {
+                    return $default;
+                }
+                $value = $value[$k];
+            }
+
+            return $value;
+        } catch (Exception $e) {
+            return $default;
+        }
     }
 }

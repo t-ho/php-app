@@ -4,10 +4,8 @@ namespace App\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
-use Core\Router;
-use Core\View;
 
-class PostController
+class PostController extends BaseController
 {
     public function index(): string
     {
@@ -17,8 +15,9 @@ class PostController
 
         $posts = Post::getRecent($limit, $page, $search);
         $total = Post::count($search);
+        $this->setTitle('Manage Posts');
 
-        return View::render(
+        return $this->renderView(
             template: 'post/index',
             data: [
               'posts' => $posts,
@@ -35,13 +34,13 @@ class PostController
         $post = Post::find($id);
 
         if (!$post) {
-            Router::notFound();
+            $this->redirectToNotFound();
         }
 
         $comments = Comment::forPost($id);
         Post::incrementViews($id);
 
-        return View::render(
+        return $this->renderView(
             template: 'post/show',
             data: [
                 'post' => $post,
