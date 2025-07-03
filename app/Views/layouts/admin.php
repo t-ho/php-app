@@ -5,25 +5,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Blog</title>
-    <style rel="stylesheet" href="/style.css"></style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/custom.css">
 </head>
 
-<body>
-  <header>
-    <h1>Dashboard</h1>
-  </header>
-    <nav>
-      <a href="/admin/dashboard">Dashboard</a>
-      <a href="/admin/posts">Manage Posts</a>
-      <form action="/logout" method="POST" style="display: inline;">
-        <?= csrf_token() ?>
-        <button type="submit">Logout(<?= $user->email ?>)</button>
-      </form>
-    </nav>
-  <main>
+<body class="d-flex flex-column min-vh-100">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/admin/dashboard">Dashboard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/posts">Manage Posts</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <form action="/logout" method="POST" class="d-inline">
+              <?= csrf_token() ?>
+              <button type="submit" class="btn btn-outline-light btn-sm">Logout (<?= $user->email ?>)</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main class="container mt-4 flex-grow-1">
     <?= $content ?>
   </main>
 
-  <footer>
-    <p>&copy; <?= date('Y') ?> My Blog - Admin Panel</p>
+  <footer class="bg-dark text-light py-3 mt-5">
+    <div class="container">
+      <p class="text-center mb-0">&copy; <?= date('Y') ?> My Blog - Admin Panel</p>
+    </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
