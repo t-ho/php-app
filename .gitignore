@@ -480,4 +480,17 @@ composer.lock
 .env.development
 .env.production
 
+##### Database & Uploads
 *.sqlite
+public/uploads/images/*
+!public/uploads/images/.gitkeep
+
+##### Storage & Cache
+storage/cache/*
+!storage/cache/.gitkeep
+storage/logs/*
+!storage/logs/.gitkeep
+storage/sessions/*
+!storage/sessions/.gitkeep
+storage/tmp/*
+!storage/tmp/.gitkeep
