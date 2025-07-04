@@ -102,22 +102,38 @@ $comments = [
 
 
 $db = App::get('database');
+$config = App::get('config');
 
+// Check if running in production environment
+$isProduction = ($config['app']['env'] ?? 'development') === 'production';
+
+if ($isProduction) {
+    echo "❌ ERROR: Cannot run fixtures in production environment!" . PHP_EOL;
+    echo "This would delete all existing data." . PHP_EOL;
+    echo "Current environment: " . $config['app']['env'] . PHP_EOL;
+    exit(1);
+}
+
+echo "🧹 Clearing existing data..." . PHP_EOL;
 $db->query("DELETE FROM comments");
 $db->query("DELETE FROM posts");
 $db->query("DELETE FROM remember_tokens");
 $db->query("DELETE FROM users");
 
 // Reset auto-increment counters (MySQL/MariaDB)
-$config = App::get('config')['database'];
-if ($config['driver'] === 'mysql') {
+$dbConfig = $config['database'];
+if ($dbConfig['driver'] === 'mysql') {
+    echo "🔄 Resetting auto-increment counters..." . PHP_EOL;
     $db->query("ALTER TABLE users AUTO_INCREMENT = 1");
     $db->query("ALTER TABLE posts AUTO_INCREMENT = 1");
     $db->query("ALTER TABLE comments AUTO_INCREMENT = 1");
     $db->query("ALTER TABLE remember_tokens AUTO_INCREMENT = 1");
-} elseif ($config['driver'] === 'sqlite') {
+} elseif ($dbConfig['driver'] === 'sqlite') {
+    echo "🔄 Resetting SQLite sequences..." . PHP_EOL;
     $db->query("DELETE FROM sqlite_sequence WHERE name IN ('users', 'posts', 'comments', 'remember_tokens')");
 }
+
+echo "📊 Loading sample data..." . PHP_EOL;
 
 foreach ($users as $user) {
     User::create($user);
@@ -131,4 +147,7 @@ foreach ($comments as $comment) {
     Comment::create($comment);
 }
 
-echo "Database fixtures created successfully." . PHP_EOL;
+echo "✅ Database fixtures created successfully!" . PHP_EOL;
+echo "👤 Users created: " . count($users) . PHP_EOL;
+echo "📝 Posts created: " . count($posts) . PHP_EOL;
+echo "💬 Comments created: " . count($comments) . PHP_EOL;
