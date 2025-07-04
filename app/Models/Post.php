@@ -32,14 +32,12 @@ class Post extends Model
         $query .= " ORDER BY created_at DESC";
 
         if ($limit !== null) {
-            $query .= " LIMIT ?";
-            $params[] = $limit;
+            $query .= " LIMIT " . (int)$limit;
         }
 
         if ($page !== null && $limit !== null) {
             $offset = ($page - 1) * $limit;
-            $query .= " OFFSET ?";
-            $params[] = $offset;
+            $query .= " OFFSET " . (int)$offset;
         }
 
         return $db->fetchAll(

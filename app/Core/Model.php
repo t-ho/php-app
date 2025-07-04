@@ -87,8 +87,7 @@ abstract class Model
         $query .= " ORDER BY created_at DESC";
 
         if ($limit !== null) {
-            $query .= " LIMIT ?";
-            $params[] = $limit;
+            $query .= " LIMIT " . (int)$limit;
         }
 
         if ($page !== null && $limit !== null) {

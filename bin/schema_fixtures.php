@@ -108,7 +108,16 @@ $db->query("DELETE FROM posts");
 $db->query("DELETE FROM remember_tokens");
 $db->query("DELETE FROM users");
 
-$db->query("DELETE FROM sqlite_sequence WHERE name IN ('users', 'posts', 'comments')");
+// Reset auto-increment counters (MySQL/MariaDB)
+$config = App::get('config')['database'];
+if ($config['driver'] === 'mysql') {
+    $db->query("ALTER TABLE users AUTO_INCREMENT = 1");
+    $db->query("ALTER TABLE posts AUTO_INCREMENT = 1");
+    $db->query("ALTER TABLE comments AUTO_INCREMENT = 1");
+    $db->query("ALTER TABLE remember_tokens AUTO_INCREMENT = 1");
+} elseif ($config['driver'] === 'sqlite') {
+    $db->query("DELETE FROM sqlite_sequence WHERE name IN ('users', 'posts', 'comments', 'remember_tokens')");
+}
 
 foreach ($users as $user) {
     User::create($user);

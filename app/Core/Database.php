@@ -47,6 +47,7 @@ class Database
 
         return match ($driver) {
             'sqlite' => "sqlite:{$dbname}",
+            'mysql' => "mysql:host={$config['host']};dbname={$dbname};port={$config['port']};charset=utf8mb4",
             default => throw new Exception("Unsupported database driver: {$driver}"),
         };
     }
