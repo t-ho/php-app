@@ -108,29 +108,40 @@ $config = App::get('config');
 $isProduction = ($config['app']['env'] ?? 'development') === 'production';
 
 if ($isProduction) {
-    echo "❌ ERROR: Cannot run fixtures in production environment!" . PHP_EOL;
-    echo "This would delete all existing data." . PHP_EOL;
-    echo "Current environment: " . $config['app']['env'] . PHP_EOL;
-    exit(1);
-}
+    echo "🔍 Production environment detected - checking if tables are empty..." . PHP_EOL;
 
-echo "🧹 Clearing existing data..." . PHP_EOL;
-$db->query("DELETE FROM comments");
-$db->query("DELETE FROM posts");
-$db->query("DELETE FROM remember_tokens");
-$db->query("DELETE FROM users");
+    // Check if tables have data
+    $userCount = $db->query("SELECT COUNT(*) as count FROM users")->fetch()['count'];
+    $postCount = $db->query("SELECT COUNT(*) as count FROM posts")->fetch()['count'];
+    $commentCount = $db->query("SELECT COUNT(*) as count FROM comments")->fetch()['count'];
 
-// Reset auto-increment counters (MySQL/MariaDB)
-$dbConfig = $config['database'];
-if ($dbConfig['driver'] === 'mysql') {
-    echo "🔄 Resetting auto-increment counters..." . PHP_EOL;
-    $db->query("ALTER TABLE users AUTO_INCREMENT = 1");
-    $db->query("ALTER TABLE posts AUTO_INCREMENT = 1");
-    $db->query("ALTER TABLE comments AUTO_INCREMENT = 1");
-    $db->query("ALTER TABLE remember_tokens AUTO_INCREMENT = 1");
-} elseif ($dbConfig['driver'] === 'sqlite') {
-    echo "🔄 Resetting SQLite sequences..." . PHP_EOL;
-    $db->query("DELETE FROM sqlite_sequence WHERE name IN ('users', 'posts', 'comments', 'remember_tokens')");
+    if ($userCount > 0 || $postCount > 0 || $commentCount > 0) {
+        echo "❌ ERROR: Tables are not empty in production environment!" . PHP_EOL;
+        echo "Users: $userCount, Posts: $postCount, Comments: $commentCount" . PHP_EOL;
+        echo "Cannot insert sample data as it would conflict with existing data." . PHP_EOL;
+        exit(1);
+    }
+
+    echo "✅ Tables are empty - proceeding with sample data insertion..." . PHP_EOL;
+} else {
+    echo "🧹 Clearing existing data..." . PHP_EOL;
+    $db->query("DELETE FROM comments");
+    $db->query("DELETE FROM posts");
+    $db->query("DELETE FROM remember_tokens");
+    $db->query("DELETE FROM users");
+
+    // Reset auto-increment counters (MySQL/MariaDB)
+    $dbConfig = $config['database'];
+    if ($dbConfig['driver'] === 'mysql') {
+        echo "🔄 Resetting auto-increment counters..." . PHP_EOL;
+        $db->query("ALTER TABLE users AUTO_INCREMENT = 1");
+        $db->query("ALTER TABLE posts AUTO_INCREMENT = 1");
+        $db->query("ALTER TABLE comments AUTO_INCREMENT = 1");
+        $db->query("ALTER TABLE remember_tokens AUTO_INCREMENT = 1");
+    } elseif ($dbConfig['driver'] === 'sqlite') {
+        echo "🔄 Resetting SQLite sequences..." . PHP_EOL;
+        $db->query("DELETE FROM sqlite_sequence WHERE name IN ('users', 'posts', 'comments', 'remember_tokens')");
+    }
 }
 
 echo "📊 Loading sample data..." . PHP_EOL;
