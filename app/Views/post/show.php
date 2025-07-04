@@ -12,7 +12,7 @@
           </small>
         </div>
         <div class="card-text">
-          <?= nl2br(e($post->content)) ?>
+          <?= $post->content ?>
         </div>
       </div>
     </article>

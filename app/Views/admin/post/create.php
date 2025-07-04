@@ -15,7 +15,12 @@
           </div>
           <div class="mb-4">
             <label for="content" class="form-label">Content</label>
-            <textarea id="content" name="content" class="form-control" rows="12" placeholder="Write your post content here..." required></textarea>
+            <?= partial('_tinymce', [
+              'id' => 'content',
+              'name' => 'content',
+              'placeholder' => 'Write your post content here...',
+              'required' => true
+            ]) ?>
           </div>
           <div class="d-flex justify-content-between">
             <a href="/admin/posts" class="btn btn-secondary">Cancel</a>

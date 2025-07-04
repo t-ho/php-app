@@ -44,12 +44,11 @@ class PostController extends AdminBaseController
     {
         Authorization::ensureAuthorized('create_post');
 
-        $title = $_POST['title'] ?? '';
-        $content = $_POST['content'] ?? '';
+        $data = $this->sanitizeInput(['title' => $_POST['title'] ?? '', 'content' => $_POST['content'] ?? '']);
+        $data['content'] = sanitizeHtml($data['content']);
 
         Post::create([
-            'title' => $title,
-            'content' => $content,
+            ...$data,
             'user_id' => Auth::user()->id,
         ]);
 
@@ -75,8 +74,9 @@ class PostController extends AdminBaseController
 
         Authorization::ensureAuthorized('update_post', $post);
 
-        $post->title = $_POST['title'] ?? '';
-        $post->content = $_POST['content'] ?? '';
+        $data = $this->sanitizeInput(['title' => $_POST['title'] ?? '', 'content' => $_POST['content'] ?? '']);
+        $post->title = $data['title'];
+        $post->content = sanitizeHtml($data['content']);
 
         $post->save();
 

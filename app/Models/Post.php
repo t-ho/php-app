@@ -17,6 +17,8 @@ class Post extends Model
     public $views;
     public $user_name;
 
+    protected static array $fillable = ['title', 'content', 'user_id', 'views'];
+
     public static function getRecent(?int $limit = null, ?int $page = null, ?string $search = null): array
     {
         /** @var \Core\Database $db */

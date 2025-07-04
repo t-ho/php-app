@@ -65,6 +65,12 @@ abstract class Model
         $db = App::get('database');
         $data = get_object_vars($this);
 
+        // Only keep fillable fields if defined
+        if (property_exists(static::class, 'fillable')) {
+            $fillable = static::$fillable ?? [];
+            $data = array_intersect_key($data, array_flip($fillable));
+        }
+
         if (!isset($this->id)) {
             unset($data['id']); // Remove id if it exists, as it will be auto-generated
             return static::create($data);
