@@ -12,8 +12,7 @@ services:
     volumes:
       - ./public/uploads:/var/www/html/public/uploads
       - ./certbot/conf:/etc/letsencrypt:ro
-      - ./certbot/www:/var/www/certbot:ro
-      - ./apache/ssl.conf:/etc/apache2/sites-available/ssl.conf:ro
+      - ./certbot/www:/var/www/certbot
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html/public
       - APP_DEBUG=${APP_DEBUG}

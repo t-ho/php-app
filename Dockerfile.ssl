@@ -24,12 +24,11 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && chmod -R 777 /var/www/html/public/uploads
 
-# Copy SSL-enabled Apache config
-COPY apache-ssl-config.conf /etc/apache2/sites-available/000-default.conf
-COPY apache-ssl-config.conf /etc/apache2/sites-available/default-ssl.conf
+# Copy Apache config templates
+COPY apache-http-config.conf /var/www/html/
+COPY apache-https-config.conf /var/www/html/
 
-# Enable SSL site
-RUN a2ensite default-ssl
+# Don't enable default-ssl site (we'll use our custom config)
 
 EXPOSE 80 443
 
