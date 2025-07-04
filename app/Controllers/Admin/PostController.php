@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\Post;
 use App\Services\Auth;
 use App\Services\Authorization;
+use App\Services\UploadService;
 
 class PostController extends AdminBaseController
 {
@@ -92,5 +93,23 @@ class PostController extends AdminBaseController
         $post->delete();
 
         $this->redirect('/admin/posts');
+    }
+
+    public function uploadImage(): void
+    {
+        try {
+            Authorization::ensureAuthorized('create_post');
+
+            if (!isset($_FILES['file'])) {
+                $this->json(['error' => 'No file uploaded'], 400);
+            }
+
+            $imageUrl = UploadService::uploadImage($_FILES['file']);
+
+            // TinyMCE expects 'location' field for the image URL
+            $this->json(['location' => $imageUrl]);
+        } catch (\Exception $e) {
+            $this->json(['error' => $e->getMessage()], 400);
+        }
     }
 }

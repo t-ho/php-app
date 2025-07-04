@@ -106,3 +106,9 @@ $router->add(
     controller: 'Admin\PostController@delete',
     middlewares: ['auth']
 );
+$router->add(
+    method: 'POST',
+    path: '/admin/upload-image',
+    controller: 'Admin\PostController@uploadImage',
+    middlewares: ['auth']
+);
