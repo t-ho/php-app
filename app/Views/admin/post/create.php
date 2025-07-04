@@ -1,14 +1,39 @@
-<h2>Create New Post</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="h3 mb-0">Create New Post</h2>
+  <a href="/admin/posts" class="btn btn-outline-secondary">← Back to Posts</a>
+</div>
 
-<form action="/admin/posts" method="POST">
-    <?= csrf_token() ?>
-    <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <form action="/admin/posts" method="POST">
+          <?= csrf_token() ?>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="Enter post title..." required>
+          </div>
+          <div class="mb-4">
+            <label for="content" class="form-label">Content</label>
+            <textarea id="content" name="content" class="form-control" rows="12" placeholder="Write your post content here..." required></textarea>
+          </div>
+          <div class="d-flex justify-content-between">
+            <a href="/admin/posts" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Create Post</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <div>
-        <label for="content">Content:</label>
-        <textarea id="content" name="content" rows="10" required></textarea>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Publishing</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">Your post will be published immediately and visible to all visitors.</p>
+        <small class="text-muted">Make sure to review your content before publishing.</small>
+      </div>
     </div>
-    <button type="submit">Create Post</button>
-</form>
+  </div>
+</div>

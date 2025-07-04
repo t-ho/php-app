@@ -1,14 +1,52 @@
-<h2>Update Post</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="h3 mb-0">Edit Post</h2>
+  <div>
+    <a href="/posts/<?= $post->id ?>" class="btn btn-outline-info me-2">View Post</a>
+    <a href="/admin/posts" class="btn btn-outline-secondary">← Back to Posts</a>
+  </div>
+</div>
 
-<form action="/admin/posts/<?= $post->id ?>" method="POST">
-    <?= csrf_token() ?>
-    <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" value="<?= e($post->title) ?>" required>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <form action="/admin/posts/<?= $post->id ?>" method="POST">
+          <?= csrf_token() ?>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" id="title" name="title" class="form-control" value="<?= e($post->title) ?>" required>
+          </div>
+          <div class="mb-4">
+            <label for="content" class="form-label">Content</label>
+            <textarea id="content" name="content" class="form-control" rows="12" required><?= e($post->content) ?></textarea>
+          </div>
+          <div class="d-flex justify-content-between">
+            <a href="/admin/posts" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update Post</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <div>
-        <label for="content">Content:</label>
-        <textarea id="content" name="content" rows="10" required><?= e($post->content) ?></textarea>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Post Stats</h5>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <strong>Views:</strong><br>
+          <?= number_format($post->views) ?>
+        </p>
+        <p class="card-text">
+          <strong>Created:</strong><br>
+          <?= date('F j, Y g:i A', strtotime($post->created_at ?? 'now')) ?>
+        </p>
+        <p class="card-text">
+          <strong>Last Updated:</strong><br>
+          <?= date('F j, Y g:i A', strtotime($post->updated_at ?? $post->created_at ?? 'now')) ?>
+        </p>
+      </div>
     </div>
-    <button type="submit">Update Post</button>
-</form>
+  </div>
+</div>

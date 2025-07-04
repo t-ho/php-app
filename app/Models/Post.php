@@ -15,21 +15,23 @@ class Post extends Model
     public $created_at;
     public $user_id;
     public $views;
+    public $user_name;
 
     public static function getRecent(?int $limit = null, ?int $page = null, ?string $search = null): array
     {
         /** @var \Core\Database $db */
         $db = App::get('database');
 
-        $query = "SELECT * FROM " . static::$table;
+        $query = "SELECT p.*, u.name as user_name FROM " . static::$table . " p 
+                  JOIN " . User::getTable() . " u ON p.user_id = u.id";
         $params = [];
 
         if ($search !== null) {
-            $query .= " WHERE title LIKE ? OR content LIKE ?";
-            $params = ["%{$search}%", "%{$search}%"];
+            $query .= " WHERE p.title LIKE ? OR p.content LIKE ? OR u.name LIKE ?";
+            $params = ["%{$search}%", "%{$search}%", "%{$search}%"];
         }
 
-        $query .= " ORDER BY created_at DESC";
+        $query .= " ORDER BY p.created_at DESC";
 
         if ($limit !== null) {
             $query .= " LIMIT " . (int)$limit;

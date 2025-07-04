@@ -10,6 +10,11 @@ abstract class Model
 
     public $id;
 
+    public static function getTable(): string
+    {
+        return static::$table;
+    }
+
     public static function all(): array
     {
         /** @var Database $db */
