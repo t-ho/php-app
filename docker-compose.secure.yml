@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  php-app:
+    build: .
+    container_name: php-app
+    ports:
+      - "80:80"
+    volumes:
+      - ./public/uploads:/var/www/html/public/uploads
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+      - APP_DEBUG=${APP_DEBUG}
+      - APP_NAME=${APP_NAME}
+      - APP_ENV=${APP_ENV}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    networks:
+      - php-app-network
+
+  mariadb:
+    image: mariadb:10.11
+    container_name: php-app-mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    restart: unless-stopped
+    networks:
+      - php-app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: php-app-phpmyadmin
+    environment:
+      - PMA_HOST=${DB_HOST}
+      - PMA_PORT=${DB_PORT}
+      - PMA_USER=${DB_USER}
+      - PMA_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PMA_ABSOLUTE_URI=https://yourdomain.com/phpmyadmin/
+    ports:
+      - "8081:80"
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    networks:
+      - php-app-network
+
+volumes:
+  mariadb_data:
+
+networks:
+  php-app-network:
+    driver: bridge
+

@@ -9,7 +9,6 @@ use Throwable;
 
 class ErrorHandler
 {
-    public static bool $isLogFileCreated = false;
 
     public static function handleException(Throwable $exception): void
     {
@@ -83,11 +82,6 @@ class ErrorHandler
 
     private static function logError(Throwable $exception): void
     {
-        if (!self::$isLogFileCreated) {
-            self::createLogFile();
-            self::$isLogFileCreated = true;
-        }
-
         $logMessage = self::formatErrorMessage(
             $exception,
             "[%s] Error: %s: %s in %s on line %d"
@@ -95,7 +89,7 @@ class ErrorHandler
 
         $logMessage .= PHP_EOL . "Stack Trace: " . $exception->getTraceAsString() . PHP_EOL;
 
-        error_log($logMessage, 3, __DIR__ . '/../../logs/error.log');
+        error_log($logMessage);
     }
 
     private static function formatErrorMessage(Throwable $exception, string $format): string
@@ -110,19 +104,4 @@ class ErrorHandler
         );
     }
 
-    private static function createLogFile(): void
-    {
-        $logDir = __DIR__ . '/../../logs';
-        $logFile = $logDir . '/error.log';
-
-        if (!is_dir($logDir)) {
-            mkdir($logDir, 0755, true);
-        }
-
-        if (!file_exists($logFile)) {
-            // Create the file and set appropriate permissions
-            file_put_contents($logFile, '');
-            chmod($logFile, 0644);
-        }
-    }
 }
