@@ -1,0 +1,41 @@
+FROM php:8.2-apache
+
+RUN apt-get update && apt-get install -y \
+    libsqlite3-dev \
+    default-mysql-client \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-install pdo pdo_sqlite pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Enable SSL and rewrite modules
+RUN a2enmod rewrite ssl headers
+
+WORKDIR /var/www/html
+
+COPY . .
+
+RUN composer install --no-dev --optimize-autoloader
+
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html \
+    && chmod -R 777 /var/www/html/public/uploads
+
+# Copy SSL-enabled Apache config
+COPY apache-ssl-config.conf /etc/apache2/sites-available/000-default.conf
+COPY apache-ssl-config.conf /etc/apache2/sites-available/default-ssl.conf
+
+# Enable SSL site
+RUN a2ensite default-ssl
+
+EXPOSE 80 443
+
+# Start script to handle SSL setup
+COPY docker-entrypoint-ssl.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint-ssl.sh
+
+ENTRYPOINT ["docker-entrypoint-ssl.sh"]
+CMD ["apache2-foreground"]

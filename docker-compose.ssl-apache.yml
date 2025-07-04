@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  php-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.ssl
+    container_name: php-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./public/uploads:/var/www/html/public/uploads
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+      - ./apache/ssl.conf:/etc/apache2/sites-available/ssl.conf:ro
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+      - APP_DEBUG=${APP_DEBUG}
+      - APP_NAME=${APP_NAME}
+      - APP_ENV=${APP_ENV}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    networks:
+      - php-app-network
+
+  mariadb:
+    image: mariadb:10.11
+    container_name: php-app-mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    restart: unless-stopped
+    networks:
+      - php-app-network
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email ${SSL_EMAIL} --agree-tos --no-eff-email -d ${DOMAIN}
+    depends_on:
+      - php-app
+
+volumes:
+  mariadb_data:
+
+networks:
+  php-app-network:
+    driver: bridge
