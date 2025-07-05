@@ -99,6 +99,9 @@ class PostController extends AdminBaseController
 
         Authorization::ensureAuthorized('delete_post', $post);
 
+        // Sync images before deletion to clean up orphaned images
+        UploadedImage::syncPostImages($post->id, '');
+
         $post->delete();
 
         $this->redirect('/admin/posts');
