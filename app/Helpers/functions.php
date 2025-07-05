@@ -134,3 +134,32 @@ if (!function_exists('sanitizeHtml')) {
         return $purifier->purify($html);
     }
 }
+
+if (!function_exists('extractPlainText')) {
+    function extractPlainText(string $html, int $length = 150): string
+    {
+        // Remove HTML tags
+        $text = strip_tags($html);
+        
+        // Decode HTML entities (like &nbsp;, &amp;, etc.)
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        
+        // Replace multiple whitespace with single space
+        $text = preg_replace('/\s+/', ' ', $text);
+        
+        // Trim whitespace
+        $text = trim($text);
+        
+        // Truncate to specified length
+        if (mb_strlen($text) > $length) {
+            $text = mb_substr($text, 0, $length);
+            // Find the last space to avoid cutting words
+            $lastSpace = mb_strrpos($text, ' ');
+            if ($lastSpace !== false) {
+                $text = mb_substr($text, 0, $lastSpace);
+            }
+        }
+        
+        return $text;
+    }
+}

@@ -5,7 +5,7 @@
       <h3 class="card-title h5">
         <a href="/posts/<?= $post->id ?>" class="text-decoration-none"><?= e($post->title); ?></a>
       </h3>
-      <p class="card-text text-muted"><?= e(substr($post->content, 0, 150)) ?>...</p>
+      <p class="card-text text-muted"><?= e(extractPlainText($post->content, 150)) ?>...</p>
       <div class="d-flex justify-content-between align-items-center">
         <small class="text-muted">
           <?= date('F j, Y', strtotime($post->created_at ?? 'now')) ?>
