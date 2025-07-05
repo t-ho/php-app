@@ -6,8 +6,8 @@ use Exception;
 
 class UploadService
 {
-    private const DEFAULT_MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-    private const DEFAULT_UPLOAD_DIR = 'uploads/images';
+    protected const DEFAULT_MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    protected const DEFAULT_UPLOAD_DIR = 'uploads/images';
 
     public static function uploadImage(
         array $file,

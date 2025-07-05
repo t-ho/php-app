@@ -37,3 +37,23 @@ CREATE TABLE IF NOT EXISTS remember_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS uploaded_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    filename VARCHAR(255) NOT NULL,
+    original_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_size INT NOT NULL,
+    mime_type VARCHAR(100) NOT NULL,
+    upload_type VARCHAR(100) NOT NULL DEFAULT 'general',
+    user_id INT NOT NULL,
+    entity_type VARCHAR(50) NULL, -- 'Post', 'User', etc.
+    entity_id INT NULL, -- ID of the related entity
+    marked_for_deletion_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_file_path (file_path),
+    INDEX idx_cleanup (marked_for_deletion_at),
+    INDEX idx_orphan_check (created_at, entity_id),
+    INDEX idx_entity_type_entity_id (entity_type, entity_id)
+);

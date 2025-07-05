@@ -103,7 +103,7 @@ $router->add(
 $router->add(
     method: 'POST',
     path: '/admin/posts/{postId}/delete',
-    controller: 'Admin\PostController@delete',
+    controller: 'Admin\PostController@destroy',
     middlewares: ['auth']
 );
 $router->add(

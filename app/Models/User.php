@@ -20,7 +20,7 @@ class User extends Model
     {
         /** @var \Core\Database $db */
         $db = App::get('database');
-        $email = strtolower(trim($email));
+
         $result = $db->fetch(
             query: "SELECT * FROM " . static::$table . " WHERE email = ?",
             params: [$email],

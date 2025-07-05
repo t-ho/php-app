@@ -136,8 +136,8 @@ abstract class Model
         }
 
         $query = "DELETE FROM " . static::$table . " WHERE id = ?";
-        $result = $db->query($query, [$this->id]);
+        $stmt = $db->query($query, [$this->id]);
 
-        return $result > 0; // Return true if rows were affected
+        return $stmt->rowCount() > 0;
     }
 }
