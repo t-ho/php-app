@@ -96,4 +96,49 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
+  // Add form validation for TinyMCE required fields
+  const forms = document.querySelectorAll('form');
+  forms.forEach(form => {
+    form.addEventListener('submit', function(e) {
+      let isValid = true;
+      const requiredTinyMCEFields = form.querySelectorAll('textarea[data-required="true"].js-tinymce');
+      
+      requiredTinyMCEFields.forEach(textarea => {
+        const editorId = textarea.id;
+        const editor = tinymce.get(editorId);
+        
+        if (editor) {
+          const textContent = editor.getContent({format: 'text'}).trim();
+          const htmlContent = editor.getContent();
+          const hasImages = htmlContent.includes('<img');
+          
+          if (!textContent && !hasImages) {
+            isValid = false;
+            // Focus on the TinyMCE editor
+            editor.focus();
+            // Show error message
+            let errorDiv = form.querySelector(`#${editorId}-error`);
+            if (!errorDiv) {
+              errorDiv = document.createElement('div');
+              errorDiv.id = `${editorId}-error`;
+              errorDiv.className = 'text-danger mt-1';
+              textarea.parentNode.appendChild(errorDiv);
+            }
+            errorDiv.textContent = 'This field is required.';
+          } else {
+            // Remove error message if content is valid
+            const errorDiv = form.querySelector(`#${editorId}-error`);
+            if (errorDiv) {
+              errorDiv.remove();
+            }
+          }
+        }
+      });
+      
+      if (!isValid) {
+        e.preventDefault();
+      }
+    });
+  });
 });

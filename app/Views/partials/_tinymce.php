@@ -4,6 +4,6 @@
   class="form-control js-tinymce"
   rows="<?= $rows ?? 12 ?>"
   data-height="<?= $height ?? 400 ?>"
+  data-required="<?= $required ? 'true' : 'false' ?>"
   placeholder="<?= $placeholder ?? '' ?>"
-  <?= $required ? 'required' : '' ?>
 ><?= $value ?? '' ?></textarea>
