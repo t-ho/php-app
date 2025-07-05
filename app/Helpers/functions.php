@@ -81,13 +81,13 @@ if (!function_exists('sanitizeHtml')) {
 
         if ($purifier === null) {
             $config = \HTMLPurifier_Config::createDefault();
-            
+
             // Set a writable cache directory or disable caching
             $cacheDir = __DIR__ . '/../../storage/cache/htmlpurifier';
             if (!is_dir($cacheDir)) {
                 mkdir($cacheDir, 0755, true);
             }
-            
+
             if (is_writable($cacheDir)) {
                 $config->set('Cache.SerializerPath', $cacheDir);
             } else {
@@ -140,16 +140,16 @@ if (!function_exists('extractPlainText')) {
     {
         // Remove HTML tags
         $text = strip_tags($html);
-        
+
         // Decode HTML entities (like &nbsp;, &amp;, etc.)
         $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        
+
         // Replace multiple whitespace with single space
         $text = preg_replace('/\s+/', ' ', $text);
-        
+
         // Trim whitespace
         $text = trim($text);
-        
+
         // Truncate to specified length
         if (mb_strlen($text) > $length) {
             $text = mb_substr($text, 0, $length);
@@ -159,7 +159,33 @@ if (!function_exists('extractPlainText')) {
                 $text = mb_substr($text, 0, $lastSpace);
             }
         }
-        
+
         return $text;
+    }
+}
+
+if (!function_exists('getCurrentPath')) {
+    function getCurrentPath(): string
+    {
+        return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    }
+}
+
+if (!function_exists('isActiveNavItem')) {
+    function isActiveNavItem(string $path): bool
+    {
+        $currentPath = getCurrentPath();
+
+        // Exact match
+        if ($currentPath === $path) {
+            return true;
+        }
+
+        // For paths like /admin/dashboard, also match /admin/dashboard/*
+        if ($path !== '/' && str_starts_with($currentPath, $path)) {
+            return true;
+        }
+
+        return false;
     }
 }

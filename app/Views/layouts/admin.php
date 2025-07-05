@@ -19,10 +19,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+            <a class="nav-link<?= isActiveNavItem('/') ? ' active' : '' ?>" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/admin/posts">Manage Posts</a>
+            <a class="nav-link<?= isActiveNavItem('/admin/dashboard') ? ' active' : '' ?>" href="/admin/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link<?= isActiveNavItem('/admin/posts') ? ' active' : '' ?>" href="/admin/posts">Manage Posts</a>
           </li>
         </ul>
         <ul class="navbar-nav">

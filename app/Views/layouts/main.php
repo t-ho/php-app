@@ -19,14 +19,14 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link<?= isActiveNavItem('/') ? ' active' : '' ?>" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/posts">Posts</a>
+            <a class="nav-link<?= isActiveNavItem('/posts') ? ' active' : '' ?>" href="/posts">Posts</a>
           </li>
           <?php if ($user && isAuthorizedFor('access_dashboard')) : ?>
             <li class="nav-item">
-              <a class="nav-link" href="/admin/dashboard">Admin</a>
+              <a class="nav-link<?= isActiveNavItem('/admin') ? ' active' : '' ?>" href="/admin/dashboard">Admin</a>
             </li>
           <?php endif; ?>
         </ul>
@@ -40,10 +40,10 @@
             </li>
           <?php else : ?>
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
+              <a class="nav-link<?= isActiveNavItem('/login') ? ' active' : '' ?>" href="/login">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
+              <a class="nav-link<?= isActiveNavItem('/register') ? ' active' : '' ?>" href="/register">Register</a>
             </li>
           <?php endif; ?>
         </ul>
