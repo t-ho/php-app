@@ -17,7 +17,8 @@ export default defineConfig({
       output: {
         entryFileNames: 'js/[name]-[hash].js',
         chunkFileNames: 'js/[name]-[hash].js',
-        assetFileNames: 'css/[name]-[hash][extname]'
+        assetFileNames: 'css/[name]-[hash][extname]',
+        manualChunks: undefined, // Bundle everything into entry files
       }
     },
     manifest: true,

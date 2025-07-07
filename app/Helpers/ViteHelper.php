@@ -67,20 +67,6 @@ class ViteHelper
             }
         }
 
-        // Import dependencies
-        if (isset($manifest[$entry]['imports'])) {
-            foreach ($manifest[$entry]['imports'] as $import) {
-                if (isset($manifest[$import]['file'])) {
-                    $assets['js'][] = '/dist/' . $manifest[$import]['file'];
-                }
-                if (isset($manifest[$import]['css'])) {
-                    foreach ($manifest[$import]['css'] as $css) {
-                        $assets['css'][] = '/dist/' . $css;
-                    }
-                }
-            }
-        }
-
         return $assets;
     }
 
