@@ -14,6 +14,7 @@ class Comment extends Model
     public $user_id;
     public $post_id;
     public $created_at;
+    public $updated_at;
     public $user_name;
 
     public static function forPost(int $postId): array
