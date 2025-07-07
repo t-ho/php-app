@@ -480,6 +480,15 @@ composer.lock
 .env.development
 .env.production
 
+##### Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+##### Vite Build Output
+public/dist/
+
 ##### Database & Uploads
 *.sqlite
 public/uploads/images/*

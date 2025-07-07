@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && docker-php-ext-install pdo pdo_sqlite pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
@@ -15,9 +18,17 @@ RUN a2enmod rewrite
 
 WORKDIR /var/www/html
 
+# Copy package files first for better Docker layer caching
+COPY package*.json ./
+
+# Install Node.js dependencies (for development)
+RUN npm install
+
+# Copy application files
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies
+RUN composer install --optimize-autoloader
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
