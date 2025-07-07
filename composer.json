@@ -15,8 +15,5 @@
     "ezyang/htmlpurifier": "^4.18",
     "robmorgan/phinx": "^0.16.9"
   },
-  "scripts": {
-    "schema:load": "php bin/schema_load.php",
-    "schema:fixtures": "php bin/schema_fixtures.php"
-  }
+  "scripts": {}
 }
