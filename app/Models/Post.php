@@ -13,6 +13,7 @@ class Post extends Model
     public $title;
     public $content;
     public $created_at;
+    public $updated_at;
     public $user_id;
     public $views;
     public $user_name;

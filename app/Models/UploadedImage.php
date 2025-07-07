@@ -21,6 +21,7 @@ class UploadedImage extends Model
     public $user_id;
     public $marked_for_deletion_at;
     public $created_at;
+    public $updated_at;
 
     public static function trackUpload(
         string $filename,
