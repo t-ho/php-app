@@ -22,6 +22,7 @@
               'id' => 'content',
               'name' => 'content',
               'value' => $post->sanitized_html_content,
+              'height' => 600,
               'required' => true
             ]) ?>
           </div>

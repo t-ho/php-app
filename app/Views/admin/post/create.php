@@ -19,6 +19,7 @@
               'id' => 'content',
               'name' => 'content',
               'placeholder' => 'Write your post content here...',
+              'height' => 600,
               'required' => true
             ]) ?>
           </div>
