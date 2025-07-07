@@ -21,7 +21,7 @@
             <?= partial('_tinymce', [
               'id' => 'content',
               'name' => 'content',
-              'value' => $post->content,
+              'value' => $post->sanitized_html_content,
               'required' => true
             ]) ?>
           </div>

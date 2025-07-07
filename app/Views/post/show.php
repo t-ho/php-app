@@ -12,7 +12,7 @@
           </small>
         </div>
         <div class="card-text">
-          <?= $post->content ?>
+          <?= $post->sanitized_html_content ?>
         </div>
       </div>
     </article>

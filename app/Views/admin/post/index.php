@@ -29,7 +29,7 @@
                 <br>
                 <small class="text-muted"><?= $post->views ?> views</small>
               </td>
-              <td><?= e(generateExcerpt($post->content, 100)) ?></td>
+              <td><?= e(generateExcerpt($post->sanitized_html_content, 100)) ?></td>
               <td>
                 <small><?= e($post->user_name ?? 'Unknown') ?></small>
               </td>
