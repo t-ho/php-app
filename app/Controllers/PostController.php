@@ -43,6 +43,7 @@ class PostController extends BaseController
         return $this->renderView(
             template: 'post/show',
             data: [
+                'title' => $post->title,
                 'post' => $post,
                 'comments' => $comments,
             ],

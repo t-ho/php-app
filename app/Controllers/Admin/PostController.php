@@ -39,6 +39,9 @@ class PostController extends AdminBaseController
 
         return $this->renderView(
             template: 'admin/post/create',
+            data: [
+              'title' => 'Create New Post',
+            ],
         );
     }
 
@@ -71,6 +74,7 @@ class PostController extends AdminBaseController
         return $this->renderView(
             template: 'admin/post/edit',
             data: [
+              'title' => 'Edit Post: ' . $post->title,
               'post' => $post,
             ],
         );
