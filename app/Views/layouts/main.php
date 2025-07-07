@@ -60,6 +60,4 @@
     </div>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- TODO: Set up a proper JS build process -->
-  <script src="/assets/js/local-date.js"></script>
-  <script src="/assets/js/local-datetime.js"></script>
+  <?= \App\Helpers\ViteHelper::instance()->renderTags('assets/js/main.js') ?>

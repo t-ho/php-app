@@ -1,0 +1,24 @@
+{
+  "name": "php-app-oop",
+  "version": "1.0.0",
+  "description": "PHP App with OOP - Modern JavaScript build tools",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "watch": "vite build --watch",
+    "docker:dev": "./scripts/dev.sh",
+    "docker:prod": "./scripts/prod.sh",
+    "docker:ssl": "./scripts/deploy-ssl-apache.sh",
+    "docker:stop": "sudo docker compose down",
+    "docker:logs": "sudo docker compose logs -f",
+    "docker:vite": "sudo docker compose up -d vite",
+    "start": "./start-dev.sh"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-legacy": "^5.0.0",
+    "terser": "^5.0.0"
+  }
+}
+

@@ -1,3 +1,22 @@
+# Multi-stage build for production with assets
+FROM node:20-slim AS node-builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies (including devDependencies for build)
+RUN npm ci
+
+# Copy source files
+COPY assets/ ./assets/
+COPY vite.config.js ./
+
+# Build assets
+RUN npm run build
+
+# Production PHP image with SSL
 FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
@@ -16,8 +35,13 @@ RUN a2enmod rewrite ssl headers
 
 WORKDIR /var/www/html
 
+# Copy application files
 COPY . .
 
+# Copy built assets from node builder
+COPY --from=node-builder /app/public/dist ./public/dist
+
+# Install PHP dependencies for production
 RUN composer install --no-dev --optimize-autoloader
 
 RUN chown -R www-data:www-data /var/www/html \
