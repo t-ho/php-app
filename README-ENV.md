@@ -1,6 +1,6 @@
 # Environment Configuration Guide
 
-This project supports multiple deployment environments. Choose the appropriate setup method below.
+This PHP App supports multiple deployment environments. Choose the appropriate setup method below.
 
 ## 🎯 Quick Setup
 
