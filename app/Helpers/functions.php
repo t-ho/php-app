@@ -135,8 +135,8 @@ if (!function_exists('sanitizeHtml')) {
     }
 }
 
-if (!function_exists('extractPlainText')) {
-    function extractPlainText(string $html, int $length = 150): string
+if (!function_exists('generateExcerpt')) {
+    function generateExcerpt(string $html, int $length = 150, bool $addEllipsis = true): string
     {
         // Remove HTML tags
         $text = strip_tags($html);
@@ -150,7 +150,8 @@ if (!function_exists('extractPlainText')) {
         // Trim whitespace
         $text = trim($text);
 
-        // Truncate to specified length
+        // Check if truncation is needed
+        $wasTruncated = false;
         if (mb_strlen($text) > $length) {
             $text = mb_substr($text, 0, $length);
             // Find the last space to avoid cutting words
@@ -158,6 +159,12 @@ if (!function_exists('extractPlainText')) {
             if ($lastSpace !== false) {
                 $text = mb_substr($text, 0, $lastSpace);
             }
+            $wasTruncated = true;
+        }
+
+        // Add ellipsis only if content was actually truncated and ellipsis is requested
+        if ($wasTruncated && $addEllipsis) {
+            $text .= '...';
         }
 
         return $text;

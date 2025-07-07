@@ -18,7 +18,7 @@
             <th>Content</th>
             <th>Created By</th>
             <th>Created At</th>
-            <th class="text-center">Actions</th>
+            <th class="text-center" style="min-width: 200px;">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
                 <br>
                 <small class="text-muted"><?= $post->views ?> views</small>
               </td>
-              <td><?= e(extractPlainText($post->content, 80)) ?>...</td>
+              <td><?= e(generateExcerpt($post->content, 100)) ?></td>
               <td>
                 <small><?= e($post->user_name ?? 'Unknown') ?></small>
               </td>
