@@ -45,11 +45,11 @@
         </p>
         <p class="card-text">
           <strong>Created:</strong><br>
-          <?= date('F j, Y g:i A', strtotime($post->created_at ?? 'now')) ?>
+          <?= partial('_local_datetime', ['datetime' => $post->created_at ?? 'now']) ?>
         </p>
         <p class="card-text">
           <strong>Last Updated:</strong><br>
-          <?= date('F j, Y g:i A', strtotime($post->updated_at ?? $post->created_at ?? 'now')) ?>
+          <?= partial('_local_datetime', ['datetime' => $post->updated_at ?? 'now']) ?>
         </p>
       </div>
     </div>

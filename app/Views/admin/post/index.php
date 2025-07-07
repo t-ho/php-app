@@ -17,7 +17,8 @@
             <th>Title</th>
             <th>Content</th>
             <th>Created By</th>
-            <th>Created At</th>
+            <th style="min-width: 160px; white-space: nowrap;">Created At</th>
+            <th style="min-width: 160px; white-space: nowrap;">Updated At</th>
             <th class="text-center" style="min-width: 200px;">Actions</th>
           </tr>
         </thead>
@@ -33,8 +34,11 @@
               <td>
                 <small><?= e($post->user_name ?? 'Unknown') ?></small>
               </td>
-              <td>
-                <small><?= date('M j, Y', strtotime($post->created_at ?? 'now')) ?></small>
+              <td style="white-space: nowrap;">
+                <small><?= partial('_local_datetime', ['datetime' => $post->created_at ?? 'now']) ?></small>
+              </td>
+              <td style="white-space: nowrap;">
+                <small><?= partial('_local_datetime', ['datetime' => $post->updated_at ?? 'now']) ?></small>
               </td>
               <td class="text-center">
                 <a href="/posts/<?= $post->id ?>" class="btn btn-outline-info btn-sm me-1" title="View">

@@ -5,7 +5,7 @@
         <h1 class="card-title"><?= e($post->title); ?></h1>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <small class="text-muted">
-            <?= date('F j, Y', strtotime($post->created_at ?? 'now')) ?>
+            <?= partial('_local_date', ['datetime' => $post->created_at ?? 'now']) ?>
           </small>
           <small class="text-muted">
             <i class="bi bi-eye"></i> <?= $post->views ?> views
@@ -48,7 +48,7 @@
                 <?= nl2br(e($comment->content)); ?>
               </div>
               <small class="text-muted">
-                Posted by <?= e($comment->user_name ?? 'Unknown User') ?> on <?= date('F j, Y', strtotime($comment->created_at ?? 'now')) ?>
+                Posted by <?= e($comment->user_name ?? 'Unknown User') ?> on <?= partial('_local_datetime', ['datetime' => $comment->created_at ?? 'now']) ?>
               </small>
             </div>
           <?php endforeach; ?>
@@ -65,7 +65,7 @@
       <div class="card-body">
         <p class="card-text">
           <strong>Published:</strong><br>
-          <?= date('F j, Y g:i A', strtotime($post->created_at ?? 'now')) ?>
+          <?= partial('_local_datetime', ['datetime' => $post->created_at ?? 'now']) ?>
         </p>
         <p class="card-text">
           <strong>Views:</strong><br>
