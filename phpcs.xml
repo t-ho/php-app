@@ -11,4 +11,11 @@
     </rule>
 
     <file>.</file>
+    
+    <!-- Exclude database files from namespace requirements -->
+    <exclude-pattern>*/database/migrations/*</exclude-pattern>
+    <exclude-pattern>*/database/seeds/*</exclude-pattern>
+    
+    <!-- Exclude vendor directory -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
 </ruleset>

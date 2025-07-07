@@ -15,6 +15,7 @@ class User extends Model
     public $password;
     public $role;
     public $created_at;
+    public $updated_at;
 
     public static function findByEmail(string $email): ?User
     {
