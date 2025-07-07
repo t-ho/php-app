@@ -53,7 +53,7 @@
                 <small><?= partial('_local_datetime', ['datetime' => $post->updated_at ?? 'now']) ?></small>
               </td>
               <td class="text-center">
-                <a href="/posts/<?= $post->id ?>" class="btn btn-outline-info btn-sm me-1" title="View">
+                <a href="/posts/<?= $post->id ?>?referer=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-outline-info btn-sm me-1" title="View">
                   View
                 </a>
                 <a href="/admin/posts/<?= $post->id ?>/edit" class="btn btn-outline-primary btn-sm me-1" title="Edit">

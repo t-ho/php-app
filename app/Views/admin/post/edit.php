@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2 class="h3 mb-0">Edit Post</h2>
   <div>
-    <a href="/posts/<?= $post->id ?>" class="btn btn-outline-info me-2">View Post</a>
+    <a href="/posts/<?= $post->id ?>?referer=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-outline-info me-2">View Post</a>
     <a href="/admin/posts" class="btn btn-outline-secondary">← Back to Posts</a>
   </div>
 </div>

@@ -71,7 +71,11 @@
           <strong>Views:</strong><br>
           <?= number_format($post->views) ?>
         </p>
-        <a href="/posts" class="btn btn-outline-secondary btn-sm">← Back to Posts</a>
+        <?php if (isset($_GET['referer']) && !empty($_GET['referer'])) : ?>
+          <a href="<?= e($_GET['referer']) ?>" class="btn btn-outline-secondary btn-sm">← Back</a>
+        <?php else : ?>
+          <a href="/posts" class="btn btn-outline-secondary btn-sm">← Back to Posts</a>
+        <?php endif; ?>
       </div>
     </div>
   </div>
