@@ -3,6 +3,18 @@
   <a href="/admin/posts/create" class="btn btn-primary">Create New Post</a>
 </div>
 
+<div class="row mb-4">
+  <div class="col-md-6 offset-md-6">
+    <form action="" method="GET" class="d-flex">
+      <input type="text" name="search" class="form-control me-2" placeholder="Search posts..." value="<?= e($search ?? '') ?>">
+      <button type="submit" class="btn btn-outline-primary">Search</button>
+      <?php if (!empty($search)) : ?>
+        <a href="/admin/posts" class="btn btn-outline-secondary ms-2">Clear</a>
+      <?php endif; ?>
+    </form>
+  </div>
+</div>
+
 <?php if (empty($posts)) : ?>
   <div class="alert alert-info text-center">
     <h4>No posts yet</h4>
