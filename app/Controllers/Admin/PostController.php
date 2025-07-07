@@ -39,6 +39,9 @@ class PostController extends AdminBaseController
 
         return $this->renderView(
             template: 'admin/post/create',
+            data: [
+              'title' => 'Create New Post',
+            ],
         );
     }
 
@@ -47,16 +50,17 @@ class PostController extends AdminBaseController
         Authorization::ensureAuthorized('create_post');
 
         $data = $this->sanitizeInput(['title' => $_POST['title'] ?? '', 'content' => $_POST['content'] ?? '']);
-        $data['content'] = sanitizeHtml($data['content']);
+        $sanitizedContent = sanitizeHtml($data['content']);
 
         $createdPost = Post::create([
-            ...$data,
+            'title' => $data['title'],
+            'sanitized_html_content' => $sanitizedContent,
             'user_id' => Auth::user()->id,
         ]);
 
         if ($createdPost) {
             // Sync images in content with database tracking
-            UploadedImage::syncPostImages($createdPost->id, $createdPost->content);
+            UploadedImage::syncPostImages($createdPost->id, $createdPost->sanitized_html_content);
         }
 
         $this->redirect('/admin/posts');
@@ -70,6 +74,7 @@ class PostController extends AdminBaseController
         return $this->renderView(
             template: 'admin/post/edit',
             data: [
+              'title' => 'Edit Post: ' . $post->title,
               'post' => $post,
             ],
         );
@@ -83,12 +88,12 @@ class PostController extends AdminBaseController
 
         $data = $this->sanitizeInput(['title' => $_POST['title'] ?? '', 'content' => $_POST['content'] ?? '']);
         $post->title = $data['title'];
-        $post->content = sanitizeHtml($data['content']);
+        $post->sanitized_html_content = sanitizeHtml($data['content']);
 
         $post->save();
 
         // Sync images in content with database tracking
-        UploadedImage::syncPostImages($post->id, $post->content);
+        UploadedImage::syncPostImages($post->id, $post->sanitized_html_content);
 
         $this->redirect('/admin/posts');
     }

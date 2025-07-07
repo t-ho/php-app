@@ -1,8 +1,8 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2 class="h3 mb-0">Edit Post</h2>
   <div>
-    <a href="/posts/<?= $post->id ?>" class="btn btn-outline-info me-2">View Post</a>
-    <a href="/admin/posts" class="btn btn-outline-secondary">← Back to Posts</a>
+    <a href="/posts/<?= $post->id ?>?referer=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-outline-info me-2">View Post</a>
+    <a href="/admin/posts" class="btn btn-outline-secondary">← Back to Manage Posts</a>
   </div>
 </div>
 
@@ -21,7 +21,8 @@
             <?= partial('_tinymce', [
               'id' => 'content',
               'name' => 'content',
-              'value' => $post->content,
+              'value' => $post->sanitized_html_content,
+              'height' => 600,
               'required' => true
             ]) ?>
           </div>
@@ -45,11 +46,11 @@
         </p>
         <p class="card-text">
           <strong>Created:</strong><br>
-          <?= date('F j, Y g:i A', strtotime($post->created_at ?? 'now')) ?>
+          <?= partial('_local_datetime', ['datetime' => $post->created_at ?? 'now']) ?>
         </p>
         <p class="card-text">
           <strong>Last Updated:</strong><br>
-          <?= date('F j, Y g:i A', strtotime($post->updated_at ?? $post->created_at ?? 'now')) ?>
+          <?= partial('_local_datetime', ['datetime' => $post->updated_at ?? 'now']) ?>
         </p>
       </div>
     </div>

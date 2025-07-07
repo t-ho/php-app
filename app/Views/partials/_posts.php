@@ -5,10 +5,10 @@
       <h3 class="card-title h5">
         <a href="/posts/<?= $post->id ?>" class="text-decoration-none"><?= e($post->title); ?></a>
       </h3>
-      <p class="card-text text-muted"><?= e(extractPlainText($post->content, 150)) ?>...</p>
+      <p class="card-text text-muted"><?= e(generateExcerpt($post->sanitized_html_content, 150)) ?></p>
       <div class="d-flex justify-content-between align-items-center">
         <small class="text-muted">
-          <?= date('F j, Y', strtotime($post->created_at ?? 'now')) ?>
+          <?= partial('_local_date', ['datetime' => $post->created_at ?? 'now']) ?>
         </small>
         <a href="/posts/<?= $post->id ?>" class="btn btn-outline-primary btn-sm">Read More</a>
       </div>

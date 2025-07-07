@@ -11,14 +11,14 @@ class Post extends Model
 
     public $id;
     public $title;
-    public $content;
+    public $sanitized_html_content;
     public $created_at;
     public $updated_at;
     public $user_id;
     public $views;
     public $user_name;
 
-    protected static array $fillable = ['title', 'content', 'user_id', 'views'];
+    protected static array $fillable = ['title', 'sanitized_html_content', 'user_id', 'views'];
 
     public static function getRecent(?int $limit = null, ?int $page = null, ?string $search = null): array
     {
@@ -30,7 +30,7 @@ class Post extends Model
         $params = [];
 
         if ($search !== null) {
-            $query .= " WHERE p.title LIKE ? OR p.content LIKE ? OR u.name LIKE ?";
+            $query .= " WHERE p.title LIKE ? OR p.sanitized_html_content LIKE ? OR u.name LIKE ?";
             $params = ["%{$search}%", "%{$search}%", "%{$search}%"];
         }
 
@@ -61,7 +61,7 @@ class Post extends Model
         $params = [];
 
         if ($search !== null) {
-            $query .= " WHERE title LIKE ? OR content LIKE ?";
+            $query .= " WHERE title LIKE ? OR sanitized_html_content LIKE ?";
             $params = ["%{$search}%", "%{$search}%"];
         }
 
