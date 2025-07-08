@@ -6,7 +6,7 @@ use App\Models\Comment;
 use App\Core\Router;
 use App\Services\AuthService;
 
-class Authorization
+class AuthorizationService
 {
     public static function ensureAuthorized(string $action, mixed $resource = null): void
     {

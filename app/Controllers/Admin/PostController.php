@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\Post;
 use App\Models\UploadedImage;
 use App\Services\AuthService;
-use App\Services\Authorization;
+use App\Services\AuthorizationService;
 use App\Services\ImageUploadService;
 
 class PostController extends AdminBaseController
@@ -14,7 +14,7 @@ class PostController extends AdminBaseController
 
     public function index(array $params): string
     {
-        Authorization::ensureAuthorized('access_manage_posts');
+        AuthorizationService::ensureAuthorized('access_manage_posts');
 
         $search = $_GET['search'] ?? '';
         $page = $_GET['page'] ?? 1;
@@ -36,7 +36,7 @@ class PostController extends AdminBaseController
 
     public function create(array $params): string
     {
-        Authorization::ensureAuthorized('create_post');
+        AuthorizationService::ensureAuthorized('create_post');
 
         return $this->renderView(
             template: 'admin/post/create',
@@ -48,7 +48,7 @@ class PostController extends AdminBaseController
 
     public function store(array $params): void
     {
-        Authorization::ensureAuthorized('create_post');
+        AuthorizationService::ensureAuthorized('create_post');
 
         $data = $this->sanitizeInput(['title' => $_POST['title'] ?? '', 'content' => $_POST['content'] ?? '']);
         $sanitizedContent = sanitizeHtml($data['content']);
@@ -70,7 +70,7 @@ class PostController extends AdminBaseController
     public function edit(array $params): string
     {
         $post = Post::findOrFail($params['postId']);
-        Authorization::ensureAuthorized('update_post', $post);
+        AuthorizationService::ensureAuthorized('update_post', $post);
 
         return $this->renderView(
             template: 'admin/post/edit',
@@ -85,7 +85,7 @@ class PostController extends AdminBaseController
     {
         $post = Post::findOrFail($params['postId']);
 
-        Authorization::ensureAuthorized('update_post', $post);
+        AuthorizationService::ensureAuthorized('update_post', $post);
 
         $data = $this->sanitizeInput(['title' => $_POST['title'] ?? '', 'content' => $_POST['content'] ?? '']);
         $post->title = $data['title'];
@@ -103,7 +103,7 @@ class PostController extends AdminBaseController
     {
         $post = Post::findOrFail($params['postId']);
 
-        Authorization::ensureAuthorized('delete_post', $post);
+        AuthorizationService::ensureAuthorized('delete_post', $post);
 
         // Sync images before deletion to clean up orphaned images
         UploadedImage::syncPostImages($post->id, '');
@@ -116,7 +116,7 @@ class PostController extends AdminBaseController
     public function uploadImage(): void
     {
         try {
-            Authorization::ensureAuthorized('create_post');
+            AuthorizationService::ensureAuthorized('create_post');
 
             if (!isset($_FILES['file'])) {
                 $this->json(['error' => 'No file uploaded'], 400);

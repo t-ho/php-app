@@ -2,7 +2,7 @@
 
 use App\Core\App;
 use App\Core\View;
-use App\Services\Authorization;
+use App\Services\AuthorizationService;
 use App\Services\CspService;
 use App\Services\CsrfService;
 use App\Services\ViteService;
@@ -56,7 +56,7 @@ if (!function_exists('csp_nonce')) {
 if (!function_exists('isAuthorizedFor')) {
     function isAuthorizedFor(string $action, mixed $resource = null): bool
     {
-        return Authorization::isAuthorizedFor($action, $resource);
+        return AuthorizationService::isAuthorizedFor($action, $resource);
     }
 }
 
