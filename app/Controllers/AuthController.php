@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\BaseController;
-use App\Services\Auth;
+use App\Services\AuthService;
 
 class AuthController extends BaseController
 {
@@ -30,7 +30,7 @@ class AuthController extends BaseController
             excludeKeys: ['password']
         );
 
-        if (Auth::attemp($data['email'], $data['password'], $data['remember'])) {
+        if (AuthService::attemp($data['email'], $data['password'], $data['remember'])) {
             $this->redirect('/');
         }
 
@@ -45,7 +45,7 @@ class AuthController extends BaseController
 
     public function logout(): void
     {
-        Auth::logout();
+        AuthService::logout();
 
         $this->redirect('/login');
     }

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\RememberToken;
 use App\Models\User;
 
-class RememberMe
+class RememberMeService
 {
     private const COOKIE_NAME = 'remember_token';
 

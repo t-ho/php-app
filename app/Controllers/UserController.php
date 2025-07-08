@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\BaseController;
-use App\Services\Auth;
+use App\Services\AuthService;
 use App\Models\User;
 
 class UserController extends BaseController
@@ -48,7 +48,7 @@ class UserController extends BaseController
         $user = User::createUser($data);
 
         if ($user) {
-            Auth::attemp($data['email'], $data['password'], false);
+            AuthService::attemp($data['email'], $data['password'], false);
             $this->redirect('/');
         }
 
@@ -63,7 +63,7 @@ class UserController extends BaseController
 
     public function logout(): void
     {
-        Auth::logout();
+        AuthService::logout();
 
         $this->redirect('/login');
     }

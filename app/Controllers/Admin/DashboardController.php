@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
-use App\Services\Authorization;
+use App\Services\AuthorizationService;
 
 class DashboardController extends AdminBaseController
 {
@@ -13,7 +13,7 @@ class DashboardController extends AdminBaseController
 
     public function index(array $params)
     {
-        Authorization::ensureAuthorized('access_dashboard');
+        AuthorizationService::ensureAuthorized('access_dashboard');
 
         $totalPosts = Post::count();
         $totalComments = Comment::count();

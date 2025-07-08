@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class Csrf
+class CsrfService
 {
     private const CSRF_TOKEN_LENGTH = 32;
     private const CSRF_TOKEN_LIFETIME = 30 * 60; // 30 minutes in seconds

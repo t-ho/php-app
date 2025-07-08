@@ -4,19 +4,19 @@ namespace App\Controllers;
 
 use App\Core\BaseController;
 use App\Models\Comment;
-use App\Services\Auth;
-use App\Services\Authorization;
+use App\Services\AuthService;
+use App\Services\AuthorizationService;
 
 class CommentController extends BaseController
 {
     public function store(array $params): void
     {
-        Authorization::ensureAuthorized('create_comment');
+        AuthorizationService::ensureAuthorized('create_comment');
 
         $content = $_POST['content'] ?? '';
         Comment::create([
             'post_id' => $params['postId'],
-            'user_id' => Auth::user()->id,
+            'user_id' => AuthService::user()->id,
             'content' => $content,
         ]);
 

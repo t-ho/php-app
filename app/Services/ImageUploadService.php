@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\UploadedImage;
-use App\Services\Auth;
+use App\Services\AuthService;
 
 class ImageUploadService extends UploadService
 {
@@ -18,7 +18,7 @@ class ImageUploadService extends UploadService
         // Handle file upload using parent method
         $imageUrl = parent::uploadImage($file, $uploadDir, $maxFileSize);
 
-        $user = Auth::user();
+        $user = AuthService::user();
 
         error_log('Image upload by user: ' . ($user ? $user->id : 'guest'));
 
