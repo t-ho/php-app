@@ -1,9 +1,10 @@
 <?php
 
-use App\Services\Authorization;
-use App\Services\Csrf;
 use App\Core\App;
 use App\Core\View;
+use App\Services\Authorization;
+use App\Services\CspService;
+use App\Services\Csrf;
 
 if (!function_exists('partial')) {
     function partial(string $template, array $data = []): string
@@ -41,6 +42,13 @@ if (!function_exists('csrf_token')) {
         return <<<TAG
         <input type="hidden" name="{$tokenName}" value="{$token}" />
         TAG;
+    }
+}
+
+if (!function_exists('csp_nonce')) {
+    function csp_nonce(): string
+    {
+        return CspService::getNonce();
     }
 }
 
