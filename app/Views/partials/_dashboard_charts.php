@@ -29,6 +29,20 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
+                <h5 class="card-title mb-0">User Role Distribution</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="userRoleDistributionPieChart" width="200" height="200" 
+                        data-role-distribution='<?= htmlspecialchars(json_encode($userRoleDistribution), ENT_QUOTES, 'UTF-8') ?>'></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
                 <h5 class="card-title mb-0">Views Summary</h5>
             </div>
             <div class="card-body">
@@ -44,6 +58,31 @@
                         <div class="col-6">
                             <h6 class="text-success"><?= $totalComments > 0 ? number_format($totalViews / $totalComments, 1) : '0' ?></h6>
                             <small class="text-muted">Views per Comment</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">User Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <h2 class="text-warning mb-2"><?= number_format($totalUsers) ?></h2>
+                    <p class="text-muted mb-2">Total Users</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="text-info"><?= $totalUsers > 0 ? number_format($totalPosts / $totalUsers, 1) : '0' ?></h6>
+                            <small class="text-muted">Avg Posts per User</small>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="text-success"><?= $totalUsers > 0 ? number_format($totalComments / $totalUsers, 1) : '0' ?></h6>
+                            <small class="text-muted">Avg Comments per User</small>
                         </div>
                     </div>
                 </div>

@@ -6,14 +6,17 @@
 <?= partial('_dashboard_stats', [
     'totalPosts' => $totalPosts,
     'totalComments' => $totalComments,
-    'totalViews' => $totalViews
+    'totalViews' => $totalViews,
+    'totalUsers' => $totalUsers
 ]) ?>
 
 <?= partial('_dashboard_charts', [
     'totalPosts' => $totalPosts,
     'totalComments' => $totalComments,
     'totalViews' => $totalViews,
-    'topViewedPosts' => $topViewedPosts
+    'totalUsers' => $totalUsers,
+    'topViewedPosts' => $topViewedPosts,
+    'userRoleDistribution' => $userRoleDistribution
 ]) ?>
 
 <!-- Recent Activity -->
@@ -49,7 +52,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">

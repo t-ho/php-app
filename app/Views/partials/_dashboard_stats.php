@@ -1,6 +1,6 @@
 <!-- Dashboard Stats Cards -->
 <div class="row mb-4">
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-6 col-xl-3">
         <div class="card text-white bg-primary">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-6 col-xl-3">
         <div class="card text-white bg-success">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-6 col-xl-3">
         <div class="card text-white bg-info">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -48,16 +48,16 @@
         </div>
     </div>
 
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-6 col-xl-3">
         <div class="card text-white bg-warning">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h6 class="card-title">Avg Views/Post</h6>
-                        <h3 class="mb-0"><?= $totalPosts > 0 ? number_format($totalViews / $totalPosts, 1) : '0' ?></h3>
+                        <h6 class="card-title">Total Users</h6>
+                        <h3 class="mb-0"><?= number_format($totalUsers) ?></h3>
                     </div>
                     <div class="align-self-center">
-                        <i class="fas fa-chart-line fa-2x"></i>
+                        <i class="fas fa-users fa-2x"></i>
                     </div>
                 </div>
             </div>

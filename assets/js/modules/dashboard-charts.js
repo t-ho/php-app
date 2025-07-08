@@ -33,6 +33,7 @@ export class DashboardCharts {
 
       this.createContentCreationBarChart();
       this.createContentDistributionPieChart();
+      this.createUserRoleDistributionPieChart();
       this.createPopularPostsBarChart();
 
       this.initialized = true;
@@ -104,6 +105,51 @@ export class DashboardCharts {
               "rgba(54, 162, 235, 0.8)",
             ],
             borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    });
+  }
+
+  createUserRoleDistributionPieChart() {
+    const ctx = document.getElementById("userRoleDistributionPieChart");
+    if (!ctx) return;
+
+    const roleData = JSON.parse(ctx.dataset.roleDistribution);
+
+    this.charts.userRoleDistribution = new Chart(ctx.getContext("2d"), {
+      type: "doughnut",
+      data: {
+        labels: roleData.map(
+          (role) => role.role.charAt(0).toUpperCase() + role.role.slice(1),
+        ),
+        datasets: [
+          {
+            data: roleData.map((role) => role.count),
+            backgroundColor: [
+              "rgba(255, 193, 7, 0.8)",
+              "rgba(220, 53, 69, 0.8)",
+              "rgba(13, 202, 240, 0.8)",
+              "rgba(25, 135, 84, 0.8)",
+              "rgba(102, 16, 242, 0.8)",
+            ],
+            borderColor: [
+              "rgba(255, 193, 7, 1)",
+              "rgba(220, 53, 69, 1)",
+              "rgba(13, 202, 240, 1)",
+              "rgba(25, 135, 84, 1)",
+              "rgba(102, 16, 242, 1)",
+            ],
             borderWidth: 2,
           },
         ],
