@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Core;
 
 use ErrorException;
+use Exception;
 use Throwable;
 
 class ErrorHandler
 {
-
     public static function handleException(Throwable $exception): void
     {
         self::logError($exception);
@@ -90,6 +90,32 @@ class ErrorHandler
         $logMessage .= PHP_EOL . "Stack Trace: " . $exception->getTraceAsString() . PHP_EOL;
 
         error_log($logMessage);
+
+        // Try to log to dedicated unhandled log file
+        $logFile = __DIR__ . '/../../storage/logs/unhandled-errors.log';
+        $logDir = dirname($logFile);
+
+        try {
+            // Create directory if it doesn't exist
+            if (!is_dir($logDir)) {
+                if (!mkdir($logDir, 0777, true)) {
+                    return;
+                }
+            }
+
+            // Check if we can write to the directory
+            if (!is_writable($logDir)) {
+                return;
+            }
+
+
+            // Add separator for file logging
+            $detailedEntry = $logMessage . PHP_EOL . str_repeat('-', 80) . PHP_EOL;
+
+            file_put_contents($logFile, $detailedEntry, FILE_APPEND | LOCK_EX);
+        } catch (Exception $e) {
+            // Silently fail
+        }
     }
 
     private static function formatErrorMessage(Throwable $exception, string $format): string
@@ -103,5 +129,4 @@ class ErrorHandler
             $exception->getLine()
         );
     }
-
 }

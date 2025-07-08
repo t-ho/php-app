@@ -12,7 +12,7 @@ class ViteHelper
         if ($this->isDev === null) {
             // Check environment variable
             $this->isDev = ($_ENV['APP_ENV'] ?? 'production') === 'development';
-            
+
             // If no env var, check if manifest exists
             if (!isset($_ENV['APP_ENV'])) {
                 $manifestPath = $_SERVER['DOCUMENT_ROOT'] . '/../public/dist/.vite/manifest.json';
@@ -54,7 +54,7 @@ class ViteHelper
         }
 
         $assets = ['js' => [], 'css' => []];
-        
+
         // Main entry file
         if (isset($manifest[$entry]['file'])) {
             $assets['js'][] = '/dist/' . $manifest[$entry]['file'];
@@ -74,12 +74,14 @@ class ViteHelper
     {
         $assets = $this->asset($entry);
         $html = '';
+        $nonce = csp_nonce();
 
         // Include Vite client for HMR in development
         if ($this->isDev()) {
             // Always use localhost for browser-side HMR connection
             $devServer = 'http://localhost:3000';
-            $html .= '<script type="module" src="' . $devServer . '/@vite/client"></script>' . "\n";
+            $html .= '<script type="module" nonce="' . $nonce .
+                     '" src="' . $devServer . '/@vite/client"></script>' . "\n";
         }
 
         // CSS files
@@ -89,7 +91,7 @@ class ViteHelper
 
         // JavaScript files
         foreach ($assets['js'] as $js) {
-            $html .= "<script type=\"module\" src=\"{$js}\"></script>\n";
+            $html .= "<script type=\"module\" nonce=\"{$nonce}\" src=\"{$js}\"></script>\n";
         }
 
         return $html;

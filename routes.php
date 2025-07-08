@@ -5,10 +5,12 @@
 */
 
 use App\Core\Middlewares\AuthMiddleware;
+use App\Core\Middlewares\CspMiddleware;
 use App\Core\Middlewares\CsrfMiddleware;
 use App\Core\Middlewares\ViewMiddleware;
 
 $router->addGlobalMiddleware(ViewMiddleware::class);
+$router->addGlobalMiddleware(CspMiddleware::class);
 $router->addGlobalMiddleware(CsrfMiddleware::class);
 $router->addRouteMiddleware('auth', AuthMiddleware::class);
 
@@ -111,4 +113,11 @@ $router->add(
     path: '/admin/upload-image',
     controller: 'Admin\PostController@uploadImage',
     middlewares: ['auth']
+);
+
+// CSP violation reporting endpoint
+$router->add(
+    method: 'POST',
+    path: '/csp-report',
+    controller: 'CspReportController@report'
 );
