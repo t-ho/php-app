@@ -41,8 +41,17 @@ class ViteHelper
             // Development mode: serve from Vite dev server
             // Always use localhost for browser-side connections
             $devServer = 'http://localhost:3000';
+            
+            // Map entry names to actual file paths
+            $entryMap = [
+                'main' => 'assets/js/main.js',
+                'admin' => 'assets/js/admin.js'
+            ];
+            
+            $filePath = $entryMap[$entry] ?? $entry;
+            
             return [
-                'js' => ["{$devServer}/{$entry}"],
+                'js' => ["{$devServer}/{$filePath}"],
                 'css' => []
             ];
         }
