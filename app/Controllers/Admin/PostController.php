@@ -10,15 +10,16 @@ use App\Services\ImageUploadService;
 
 class PostController extends AdminBaseController
 {
+    private const DEFAULT_PAGE_LIMIT = 10;
+
     public function index(array $params): string
     {
         Authorization::ensureAuthorized('access_manage_posts');
 
         $search = $_GET['search'] ?? '';
         $page = $_GET['page'] ?? 1;
-        $limit = 5;
 
-        $posts = Post::getRecent($limit, $page, $search);
+        $posts = Post::getRecent(self::DEFAULT_PAGE_LIMIT, $page, $search);
         $total = Post::count($search);
 
         return $this->renderView(
@@ -28,7 +29,7 @@ class PostController extends AdminBaseController
               'posts' => $posts,
               'search' => $search,
               'currentPage' => $page,
-              'totalPages' => ceil($total / $limit),
+              'totalPages' => ceil($total / self::DEFAULT_PAGE_LIMIT),
             ],
         );
     }
