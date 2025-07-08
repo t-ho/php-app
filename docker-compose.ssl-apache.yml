@@ -11,6 +11,7 @@ services:
       - "443:443"
     volumes:
       - ./public/uploads:/var/www/html/public/uploads
+      - ./storage:/var/www/html/storage
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot
     environment:

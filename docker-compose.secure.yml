@@ -8,6 +8,7 @@ services:
       - "80:80"
     volumes:
       - ./public/uploads:/var/www/html/public/uploads
+      - ./storage:/var/www/html/storage
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html/public
       - APP_DEBUG=${APP_DEBUG}

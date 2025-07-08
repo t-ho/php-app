@@ -64,8 +64,13 @@ class CspService
                  "frame-src 'none'; " .
                  "object-src 'none'; " .
                  "worker-src 'self'; " .
-                 "frame-ancestors 'none'"; // Prevent framing of the site for clickjacking protection
+                 "frame-ancestors 'none'; " . // Prevent framing of the site for clickjacking protection
+                 "report-uri /csp-report; " . // Legacy reporting (older browsers)
+                 "report-to csp-endpoint;"; // Modern reporting (newer browsers)
 
         header("Content-Security-Policy: {$policy}");
+
+        // Add modern reporting endpoint definition
+        header('Reporting-Endpoints: csp-endpoint="/csp-report"');
     }
 }

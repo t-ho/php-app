@@ -114,3 +114,10 @@ $router->add(
     controller: 'Admin\PostController@uploadImage',
     middlewares: ['auth']
 );
+
+// CSP violation reporting endpoint
+$router->add(
+    method: 'POST',
+    path: '/csp-report',
+    controller: 'CspReportController@report'
+);

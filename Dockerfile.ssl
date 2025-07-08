@@ -51,7 +51,8 @@ RUN composer install --no-dev --optimize-autoloader
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
-    && chmod -R 777 /var/www/html/public/uploads
+    && chmod -R 755 /var/www/html/public/uploads \
+    && chmod -R 755 /var/www/html/storage
 
 # Copy Apache config templates
 COPY apache-http-config.conf /var/www/html/
