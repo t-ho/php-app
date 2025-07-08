@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Comment;
 use App\Core\Router;
+use App\Services\AuthService;
 
 class Authorization
 {
@@ -16,7 +17,7 @@ class Authorization
 
     public static function isAuthorizedFor(string $action, mixed $resource = null): bool
     {
-        $user = Auth::user();
+        $user = AuthService::user();
         if (!$user) {
             return false; // Not logged in
         }

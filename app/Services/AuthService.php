@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 
-class Auth
+class AuthService
 {
     public static $user = null;
 

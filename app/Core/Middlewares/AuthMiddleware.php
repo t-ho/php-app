@@ -3,13 +3,13 @@
 namespace App\Core\Middlewares;
 
 use App\Core\Router;
-use App\Services\Auth;
+use App\Services\AuthService;
 
 class AuthMiddleware implements MiddlewareInterface
 {
     public function handle(callable $next)
     {
-        $user = Auth::user();
+        $user = AuthService::user();
         if (!$user) {
             Router::unauthorized();
         }

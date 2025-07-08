@@ -4,7 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Models\Post;
 use App\Models\UploadedImage;
-use App\Services\Auth;
+use App\Services\AuthService;
 use App\Services\Authorization;
 use App\Services\ImageUploadService;
 
@@ -56,7 +56,7 @@ class PostController extends AdminBaseController
         $createdPost = Post::create([
             'title' => $data['title'],
             'sanitized_html_content' => $sanitizedContent,
-            'user_id' => Auth::user()->id,
+            'user_id' => AuthService::user()->id,
         ]);
 
         if ($createdPost) {
