@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Services;
 
-class ViteHelper
+use App\Core\App;
+
+class ViteService
 {
     private $manifest = null;
     private $isDev = null;
@@ -38,40 +40,41 @@ class ViteHelper
     public function asset(string $entry): array
     {
         if ($this->isDev()) {
-            // Development mode: serve from Vite dev server
-            // Always use localhost for browser-side connections
-            $devServer = 'http://localhost:3000';
-            
-            // Map entry names to actual file paths
-            $entryMap = [
-                'main' => 'assets/js/main.js',
-                'admin' => 'assets/js/admin.js'
-            ];
-            
-            $filePath = $entryMap[$entry] ?? $entry;
-            
-            return [
-                'js' => ["{$devServer}/{$filePath}"],
-                'css' => []
-            ];
+            return $this->getDevAssets($entry);
         }
 
-        // Production mode: use manifest
+        return $this->getProdAssets($entry);
+    }
+
+    private function getDevAssets(string $entry): array
+    {
+        $devServer = 'http://localhost:3000';
+        
+        return [
+            'js' => ["{$devServer}/{$entry}"],
+            'css' => []
+        ];
+    }
+
+    private function getProdAssets(string $entry): array
+    {
         $manifest = $this->getManifest();
+        
         if (!isset($manifest[$entry])) {
             return ['js' => [], 'css' => []];
         }
-
+        
+        $manifestEntry = $manifest[$entry];
         $assets = ['js' => [], 'css' => []];
 
         // Main entry file
-        if (isset($manifest[$entry]['file'])) {
-            $assets['js'][] = '/dist/' . $manifest[$entry]['file'];
+        if (isset($manifestEntry['file'])) {
+            $assets['js'][] = '/dist/' . $manifestEntry['file'];
         }
 
         // CSS files
-        if (isset($manifest[$entry]['css'])) {
-            foreach ($manifest[$entry]['css'] as $css) {
+        if (isset($manifestEntry['css'])) {
+            foreach ($manifestEntry['css'] as $css) {
                 $assets['css'][] = '/dist/' . $css;
             }
         }
@@ -106,9 +109,9 @@ class ViteHelper
         return $html;
     }
 
-    // Helper method to get instance from container
+    // Get service instance from container
     public static function instance(): self
     {
-        return \App\Core\App::get('vite');
+        return App::get('vite');
     }
 }

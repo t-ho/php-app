@@ -5,6 +5,7 @@ use App\Core\View;
 use App\Services\Authorization;
 use App\Services\CspService;
 use App\Services\Csrf;
+use App\Services\ViteService;
 
 if (!function_exists('partial')) {
     function partial(string $template, array $data = []): string
@@ -202,5 +203,12 @@ if (!function_exists('isActiveNavItem')) {
         }
 
         return false;
+    }
+}
+
+if (!function_exists('asset_tags')) {
+    function asset_tags(string $entry): string
+    {
+        return ViteService::instance()->renderTags($entry);
     }
 }
