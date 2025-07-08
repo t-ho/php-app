@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Services\RememberMeService;
 
 class AuthService
 {
@@ -19,7 +20,7 @@ class AuthService
             $_SESSION['user_id'] = $user->id;
 
             if ($remember) {
-                RememberMe::createToken($user->id);
+                RememberMeService::createToken($user->id);
             }
 
             return true;
@@ -33,7 +34,7 @@ class AuthService
         if (static::$user === null) {
             $userId = $_SESSION['user_id'] ?? null;
 
-            static::$user = $userId ? User::find($userId) : RememberMe::user();
+            static::$user = $userId ? User::find($userId) : RememberMeService::user();
         }
 
         return static::$user;
@@ -41,7 +42,7 @@ class AuthService
 
     public static function logout(): void
     {
-        RememberMe::clearToken();
+        RememberMeService::clearToken();
         $_SESSION = [];
         session_destroy();
         static::$user = null;
