@@ -61,7 +61,12 @@
                 </a>
                 <form action="/admin/posts/<?= $post->id ?>/delete" method="POST" style="display:inline;">
                   <?= csrf_token() ?>
-                  <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this post?');" title="Delete">
+                  <button
+                    type="submit"
+                    class="btn btn-outline-danger btn-sm"
+                    onclick="return confirm('Are you sure you want to delete this post?');"
+                    title="Delete"
+                    nonce="<?= csp_nonce() ?>">
                     Delete
                   </button>
                 </form>
