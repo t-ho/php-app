@@ -3,7 +3,7 @@
 namespace App\Core\Middlewares;
 
 use App\Core\Router;
-use App\Services\Csrf;
+use App\Services\CsrfService;
 
 class CsrfMiddleware implements MiddlewareInterface
 {
@@ -24,7 +24,7 @@ class CsrfMiddleware implements MiddlewareInterface
             return $next();
         }
 
-        if (!Csrf::isTokenValid()) {
+        if (!CsrfService::isTokenValid()) {
             Router::pageExpired();
         }
 

@@ -4,7 +4,7 @@ use App\Core\App;
 use App\Core\View;
 use App\Services\Authorization;
 use App\Services\CspService;
-use App\Services\Csrf;
+use App\Services\CsrfService;
 use App\Services\ViteService;
 
 if (!function_exists('partial')) {
@@ -38,8 +38,8 @@ if (!function_exists('e')) {
 if (!function_exists('csrf_token')) {
     function csrf_token(): string
     {
-        $token = Csrf::getToken();
-        $tokenName = Csrf::CSRF_TOKEN_NAME;
+        $token = CsrfService::getToken();
+        $tokenName = CsrfService::CSRF_TOKEN_NAME;
         return <<<TAG
         <input type="hidden" name="{$tokenName}" value="{$token}" />
         TAG;
