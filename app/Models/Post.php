@@ -9,6 +9,8 @@ class Post extends Model
 {
     protected static string $table = 'posts';
 
+    public const DEFAULT_TOP_VIEWED_POSTS_LIMIT = 5;
+
     public $id;
     public $title;
     public $sanitized_html_content;
@@ -79,6 +81,41 @@ class Post extends Model
         $db->query(
             query: "UPDATE " . static::$table . " SET views = views + 1 WHERE id = ?",
             params: [$id]
+        );
+    }
+
+    public static function getTotalViews(): int
+    {
+        /** @var \Core\Database $db */
+        $db = App::get('database');
+
+        return (int) $db->query(
+            query: "SELECT SUM(views) FROM " . static::$table,
+            params: []
+        )->fetchColumn();
+    }
+
+    /**
+     * Get top viewed posts optimized for chart rendering
+     *
+     * This method is specifically optimized for chart performance by:
+     * - Selecting only required columns (id, title, views) instead of p.*
+     * - Avoiding encoding/escaping of sanitized_html_content which is not needed for charts
+     * - Reducing memory usage and JSON payload size
+     *
+     * @param int $limit Maximum number of posts to return
+     * @return array Array of post objects with id, title, views properties
+     */
+    public static function getTopViewedPostsForChart(int $limit = self::DEFAULT_TOP_VIEWED_POSTS_LIMIT): array
+    {
+        /** @var \Core\Database $db */
+        $db = App::get('database');
+
+        return $db->fetchAll(
+            query: "SELECT p.id, p.title, p.views FROM " . static::$table . " p 
+                    ORDER BY p.views DESC LIMIT " . (int)$limit,
+            params: [],
+            className: static::class
         );
     }
 }

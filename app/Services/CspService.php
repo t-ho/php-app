@@ -48,6 +48,7 @@ class CspService
         $policy = "default-src 'self'; " .
                  "script-src 'self' 'nonce-{$nonce}' " .
                              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js " .
+                             "https://cdn.jsdelivr.net/npm/chart.js " .
                              "https://cdn.tiny.cloud/1/bzqo8ikmoao90q0x24dyj546pjt7vna6d90oioqye2dy94p3/tinymce/ " .
                              ($isDevelopment ? " ws://localhost:3000" : "") . "; " .
                  "style-src 'self' 'unsafe-inline' " . // use 'unsafe-inline' for styles as tinyMCE requires it

@@ -44,4 +44,18 @@ class User extends Model
 
         return static::create($userData);
     }
+
+    public static function getRoleDistributionForChart(): array
+    {
+        /** @var \Core\Database $db */
+        $db = App::get('database');
+
+        return $db->fetchAll(
+            query: "SELECT role, COUNT(*) as count FROM " . static::$table . " 
+                    GROUP BY role
+                    ORDER BY count DESC",
+            params: [],
+            className: \stdClass::class
+        );
+    }
 }
