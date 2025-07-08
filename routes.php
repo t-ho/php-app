@@ -5,10 +5,12 @@
 */
 
 use App\Core\Middlewares\AuthMiddleware;
+use App\Core\Middlewares\CspMiddleware;
 use App\Core\Middlewares\CsrfMiddleware;
 use App\Core\Middlewares\ViewMiddleware;
 
 $router->addGlobalMiddleware(ViewMiddleware::class);
+$router->addGlobalMiddleware(CspMiddleware::class);
 $router->addGlobalMiddleware(CsrfMiddleware::class);
 $router->addRouteMiddleware('auth', AuthMiddleware::class);
 
