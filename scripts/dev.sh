@@ -7,8 +7,8 @@ echo "🚀 Starting development environment..."
 cp .env.development .env
 
 # Build and start development containers
-sudo docker compose down -v
-sudo docker compose up --build -d
+docker compose down -v
+docker compose up --build -d
 
 echo "✅ Development environment started!"
 echo "📱 Application: http://localhost:8080"
@@ -24,7 +24,7 @@ sleep 10
 echo "📦 Checking Node.js dependencies..."
 if [ ! -d "node_modules" ]; then
   echo "   Installing Node.js dependencies..."
-  docker exec -it php-app npm install
+  docker compose exec php-app npm install
 fi
 
 # Check Vite dev server status

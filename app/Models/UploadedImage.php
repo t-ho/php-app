@@ -206,14 +206,35 @@ class UploadedImage extends Model
 
     public function delete(): bool
     {
-        if (isset($this->file_path)) {
-            // Actually delete the file from filesystem
-            $fullPath = __DIR__ . '/../../public' . $this->file_path;
-            if (file_exists($fullPath)) {
-                unlink($fullPath);
-            }
+        return parent::delete();
+    }
+
+    /**
+     * Batch delete multiple uploaded images by IDs
+     * Only deletes database records - physical files should be deleted first
+     */
+    public static function batchDelete(array $ids): int
+    {
+        if (empty($ids)) {
+            return 0;
         }
 
-        return parent::delete();
+        // Validate all IDs are integers
+        $ids = array_map('intval', $ids);
+        $ids = array_filter($ids, fn ($id) => $id > 0);
+
+        if (empty($ids)) {
+            return 0;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        /** @var \Core\Database $db */
+        $db = App::get('database');
+
+        $query = "DELETE FROM " . static::$table . " WHERE id IN ($placeholders)";
+        $statement = $db->query($query, $ids);
+
+        return $statement->rowCount();
     }
 }
