@@ -1,0 +1,100 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * CLI script to cleanup orphaned images
+ *
+ * Usage:
+ *   bin/cleanup-orphaned-images [--days=7]
+ *
+ * Options:
+ *   --days=N    Number of days old for images to be considered orphaned (default: 7)
+ *   --help      Show this help message
+ */
+
+// Change to project root directory
+chdir(__DIR__ . '/..');
+
+// Bootstrap the application
+require_once 'bootstrap.php';
+
+// Handle Docker environment automatically
+if (getenv('DOCKER_CONTAINER') || file_exists('/.dockerenv')) {
+    // Running in Docker - ensure proper logging
+    ini_set('log_errors', 1);
+    ini_set('error_log', 'storage/logs/image-cleanup.log');
+}
+
+use App\Commands\CleanupOrphanedImagesCommand;
+
+// Parse command line arguments
+$options = getopt('', ['days:', 'help']);
+
+if (isset($options['help'])) {
+    echo <<<HELP
+Cleanup Orphaned Images Script
+
+This script removes orphaned images from the filesystem and database.
+Images are considered orphaned if they are:
+1. Marked for deletion and older than specified days
+2. Not associated with any entity (post) and older than specified days
+
+Usage:
+  bin/cleanup-orphaned-images [--days=7]
+
+Options:
+  --days=N    Number of days old for images to be considered orphaned (default: 7)
+  --help      Show this help message
+
+Examples:
+  bin/cleanup-orphaned-images
+  bin/cleanup-orphaned-images --days=14
+  bin/cleanup-orphaned-images --days=1
+
+Configuration:
+  CLI argument takes precedence over environment variable
+  Environment variable: CLEANUP_DAYS (default: 7)
+  Log level: CLEANUP_LOG_LEVEL (default: INFO)
+
+Log files are written to: storage/logs/image-cleanup.log
+
+HELP;
+    exit(0);
+}
+
+// Get days from CLI argument or environment variable
+$days = 7; // default
+if (isset($options['days'])) {
+    $days = (int)$options['days'];
+} elseif (getenv('CLEANUP_DAYS')) {
+    $days = (int)getenv('CLEANUP_DAYS');
+}
+
+if ($days < 1) {
+    echo "Error: --days must be a positive integer\n";
+    exit(1);
+}
+
+// Show configuration source
+$daysSource = isset($options['days']) ? 'CLI argument' : 
+             (getenv('CLEANUP_DAYS') ? 'Environment variable' : 'Default');
+
+echo "Starting orphaned image cleanup...\n";
+echo "Days threshold: {$days} ({$daysSource})\n";
+echo "Log file: storage/logs/image-cleanup.log\n";
+echo "---\n";
+
+try {
+    $command = new CleanupOrphanedImagesCommand();
+    $command->run(['days' => $days]);
+
+    echo "---\n";
+    echo "Cleanup completed successfully!\n";
+    echo "Check storage/logs/image-cleanup.log for detailed information.\n";
+
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
+    echo "Check storage/logs/image-cleanup.log for more details.\n";
+    exit(1);
+}
+
