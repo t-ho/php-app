@@ -1,6 +1,12 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Dashboard Overview</h2>
-    <small class="text-muted">Welcome back, <?= e($user->name ?? 'Admin') ?>!</small>
+    <div class="d-flex flex-column align-items-end">
+        <small class="text-muted mb-2">Welcome back, <?= e($user->name ?? 'Admin') ?>!</small>
+        <button type="button" class="btn btn-primary btn-sm" id="generateReportBtn">
+            <i class="fas fa-file-pdf me-1"></i>
+            Generate Report
+        </button>
+    </div>
 </div>
 
 <?= partial('_dashboard_stats', [
@@ -84,4 +90,3 @@
         </div>
     </div>
 </div>
-

@@ -46,6 +46,13 @@ if (!function_exists('csrf_token')) {
     }
 }
 
+if (!function_exists('csrf_token_value')) {
+    function csrf_token_value(): string
+    {
+        return CsrfService::getToken();
+    }
+}
+
 if (!function_exists('csp_nonce')) {
     function csp_nonce(): string
     {

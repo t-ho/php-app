@@ -208,6 +208,35 @@ export class DashboardCharts {
     });
   }
 
+  // Method to capture charts as images for PDF report
+  async captureChartsAsImages() {
+    const chartImages = {};
+
+    // Capture content creation bar chart
+    if (this.charts.contentCreation) {
+      chartImages.contentCreation = this.charts.contentCreation.toBase64Image();
+    }
+
+    // Capture content distribution pie chart
+    if (this.charts.contentDistribution) {
+      chartImages.contentDistribution =
+        this.charts.contentDistribution.toBase64Image();
+    }
+
+    // Capture user role distribution chart
+    if (this.charts.userRoleDistribution) {
+      chartImages.userRoleDistribution =
+        this.charts.userRoleDistribution.toBase64Image();
+    }
+
+    // Capture popular posts chart (horizontal)
+    if (this.charts.popularPosts) {
+      chartImages.topViewedPosts = this.charts.popularPosts.toBase64Image();
+    }
+
+    return chartImages;
+  }
+
   // Method to destroy all charts
   destroy() {
     Object.values(this.charts).forEach((chart) => {
