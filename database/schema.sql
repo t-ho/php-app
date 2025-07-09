@@ -1,4 +1,8 @@
 -- MySQL/MariaDB schema for a simple blogging platform
+--
+-- NOTE: Additional performance indexes are created in migration scripts to optimize
+-- real query patterns used while developing app features. See database/migrations/
+-- for query-optimized composite indexes based on actual usage patterns.
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
