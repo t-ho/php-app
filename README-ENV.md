@@ -105,10 +105,10 @@ nano .env.ssl
 Check your configuration:
 ```bash
 # Verify environment is loaded
-docker exec -it php-app env | grep APP_
+docker compose exec php-app env | grep APP_
 
 # Check database connection
-docker exec -it php-app-mariadb mysql -u$DB_USER -p$DB_PASS -e "SELECT 1"
+docker compose exec mariadb mysql -u$DB_USER -p$DB_PASS -e "SELECT 1"
 
 # Test SSL (production only)
 curl -I https://yourdomain.com

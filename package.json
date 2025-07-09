@@ -10,9 +10,9 @@
     "docker:dev": "./scripts/dev.sh",
     "docker:prod": "./scripts/prod.sh",
     "docker:ssl": "./scripts/deploy-ssl-apache.sh",
-    "docker:stop": "sudo docker compose down",
-    "docker:logs": "sudo docker compose logs -f",
-    "docker:vite": "sudo docker compose up -d vite",
+    "docker:stop": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:vite": "docker compose up -d vite",
     "start": "./start-dev.sh"
   },
   "devDependencies": {
