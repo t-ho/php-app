@@ -53,6 +53,7 @@ class CspService
                              ($isDevelopment ? " ws://localhost:3000" : "") . "; " .
                  "style-src 'self' 'unsafe-inline' " . // use 'unsafe-inline' for styles as tinyMCE requires it
                             "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css " .
+                            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css " .
                             "https://cdn.tiny.cloud/1/bzqo8ikmoao90q0x24dyj546pjt7vna6d90oioqye2dy94p3/tinymce/; " .
                  "img-src 'self' data: blob: " .
                           "https://sp.tinymce.com " .
@@ -61,6 +62,7 @@ class CspService
                              "https://cdn.tiny.cloud/1/bzqo8ikmoao90q0x24dyj546pjt7vna6d90oioqye2dy94p3/" .
                              ($isDevelopment ? " ws://localhost:3000 wss://localhost:3000" : "") . "; " .
                  "font-src 'self' data: " .
+                           "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/ " .
                            "https://cdn.tiny.cloud/1/bzqo8ikmoao90q0x24dyj546pjt7vna6d90oioqye2dy94p3/tinymce/; " .
                  "frame-src 'none'; " .
                  "object-src 'none'; " .
