@@ -9,6 +9,8 @@ class UploadService
     protected const DEFAULT_MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
     protected const DEFAULT_UPLOAD_DIR = 'uploads/images';
     protected const DEFAULT_WATERMARK_TEXT = 'PHP App - tdev.app';
+    protected const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    protected const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
     public static function uploadImage(
         array $file,
@@ -39,14 +41,25 @@ class UploadService
             throw new Exception('Upload failed');
         }
 
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (!in_array($file['type'], $allowedTypes)) {
+        if (!in_array($file['type'], self::ALLOWED_MIME_TYPES)) {
             throw new Exception('Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.');
         }
 
         if ($file['size'] > $maxFileSize) {
             $maxSizeMB = round($maxFileSize / (1024 * 1024), 1);
             throw new Exception("File too large. Maximum size is {$maxSizeMB}MB.");
+        }
+
+        // Validate file content is actually an image
+        $imageInfo = getimagesize($file['tmp_name']);
+        if ($imageInfo === false) {
+            throw new Exception('File is not a valid image.');
+        }
+
+        // Double-check MIME type from file content
+        $detectedMimeType = $imageInfo['mime'];
+        if (!in_array($detectedMimeType, self::ALLOWED_MIME_TYPES)) {
+            throw new Exception('Invalid image format detected.');
         }
     }
 
@@ -61,7 +74,12 @@ class UploadService
 
     public static function generateUniqueFilename(string $originalName): string
     {
-        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+        
+        if (!in_array($extension, self::ALLOWED_EXTENSIONS)) {
+            throw new Exception('Invalid file extension. Only JPG, JPEG, PNG, GIF, and WebP are allowed.');
+        }
+        
         return uniqid() . '_' . time() . '.' . $extension;
     }
 

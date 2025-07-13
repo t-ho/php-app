@@ -11,6 +11,8 @@ use App\Services\ReportService;
 class ReportController extends AdminBaseController
 {
     private const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+    private const ALLOWED_BASE64_MIME_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
+    private const BASE64_FORMAT_PATTERN = '/^data:image\/(png|jpeg|jpg);base64,/';
 
     public function generateDashboardReport()
     {
@@ -65,7 +67,7 @@ class ReportController extends AdminBaseController
             $base64Data = $chartData[$key];
 
             // Validate base64 format
-            if (!is_string($base64Data) || !preg_match('/^data:image\/(png|jpeg|jpg);base64,/', $base64Data)) {
+            if (!is_string($base64Data) || !preg_match(self::BASE64_FORMAT_PATTERN, $base64Data)) {
                 return null; // Invalid base64 image format
             }
 
@@ -80,6 +82,17 @@ class ReportController extends AdminBaseController
             $decodedSize = strlen($decodedContent);
             if ($decodedSize > self::MAX_IMAGE_SIZE_BYTES) {
                 return null; // Image too large
+            }
+
+            // Validate the decoded content is actually a valid image
+            $imageInfo = getimagesizefromstring($decodedContent);
+            if ($imageInfo === false) {
+                return null; // Not a valid image
+            }
+
+            // Verify MIME type matches expected image types
+            if (!in_array($imageInfo['mime'], self::ALLOWED_BASE64_MIME_TYPES)) {
+                return null; // Invalid image type
             }
 
             // Add validated chart data to sanitized array
