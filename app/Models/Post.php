@@ -79,7 +79,7 @@ class Post extends Model
         $db = App::get('database');
 
         $db->query(
-            query: "UPDATE " . static::$table . " SET views = views + 1 WHERE id = ?",
+            query: "UPDATE " . static::$table . " SET views = views + 1, updated_at = updated_at WHERE id = ?",
             params: [$id]
         );
     }
